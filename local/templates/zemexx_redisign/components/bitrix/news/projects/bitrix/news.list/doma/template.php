@@ -272,11 +272,12 @@ function zx_price_short($v){
 </div>
 
 <style>
-.zx-doma-wrap { padding-top: 0; padding-bottom: 48px; }
+.zx-doma-wrap { padding-top: 24px; padding-bottom: 32px; }
+@media(min-width:992px){ .zx-doma-wrap { padding-top: 32px; padding-bottom: 40px; } }
 
 /* Trustbar — top */
 .zx-trustbar--top {
-  margin: 20px 0 20px;
+  margin: 0 0 20px;
   padding: 14px 18px;
   background: #F4F9F5;
   border: 1px solid #D6EBD9;
@@ -480,7 +481,7 @@ function zx_price_short($v){
 .zx-doma-filter__reset:hover { color: var(--text-primary,#11181C); background: #F4F6F9; }
 
 /* Toolbar */
-.zx-doma-toolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin: 4px 0 16px; flex-wrap:wrap; }
+.zx-doma-toolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin: 20px 0 16px; flex-wrap:wrap; }
 .zx-doma-toolbar__result { font-size: 14px; color: var(--text-secondary,#6F737A); }
 .zx-doma-toolbar__result b { color: var(--text-primary, #11181C); font-weight: 600; }
 .zx-doma-toolbar__sort { display:flex; align-items:center; gap:8px; color: #8A8F99; font-size: 13px; }

@@ -8,11 +8,11 @@
     display:grid;
     grid-template-columns:1fr;
     gap:16px;
-    padding:48px 0 32px;
+    padding:0 0 24px;
     align-items:start;
 }
 @media(min-width:992px){
-    .doma-intro{grid-template-columns:1fr 1fr;gap:64px;padding:72px 0 48px;}
+    .doma-intro{grid-template-columns:1fr 1fr;gap:64px;padding:0 0 32px;}
 }
 .doma-intro__left h2{margin:0;color:var(--text-primary);}
 .doma-intro__right p{margin:0;font-size:17px;line-height:1.6;}
@@ -323,7 +323,8 @@
 /* =========================================================
    FEATURES BLOCK (описание услуги)
    ========================================================= */
-.doma-features{padding:72px 0 40px;background:var(--bg-primary);}
+.doma-features{padding:48px 0;background:var(--bg-primary);}
+@media(min-width:992px){.doma-features{padding:64px 0;}}
 .doma-features__grid{
     display:grid;grid-template-columns:1fr;gap:18px;margin-top:24px;
 }
@@ -357,8 +358,9 @@
    ========================================================= */
 .doma-mortgage-wrap{
     background:var(--bg-secondary);
-    padding:72px 0 40px;
+    padding:48px 0;
 }
+@media(min-width:992px){.doma-mortgage-wrap{padding:64px 0;}}
 .doma-mortgage-wrap .c-mortgage,
 .doma-mortgage-wrap .c-mortgageBanks,
 .doma-mortgage-wrap section{max-width:1776px;margin-left:auto;margin-right:auto;}
@@ -370,7 +372,7 @@
    ========================================================= */
 .doma-final{
     position:relative;overflow:hidden;
-    margin:72px 0 0;
+    margin:0;
     isolation:isolate;
     color:#fff;
 }
@@ -387,8 +389,9 @@
 }
 .doma-final__grid{
     display:grid;grid-template-columns:1fr;gap:40px;align-items:center;
-    padding:64px 0 80px;
+    padding:56px 0 64px;
 }
+@media(min-width:992px){.doma-final__grid{padding:72px 0 80px;}}
 @media(min-width:992px){.doma-final__grid{grid-template-columns:1.1fr 1fr;gap:60px;}}
 
 .doma-final__eyebrow{
