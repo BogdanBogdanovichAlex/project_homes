@@ -246,10 +246,33 @@
   color: var(--text-primary);
   white-space: nowrap;
 }
+.zx-proj-card__sub {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .zx-proj-card__mortgage {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 13px;
   color: var(--text-secondary);
   white-space: nowrap;
+}
+.zx-proj-card__mortgage-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--text-accent, #00bf3f);
+  background: var(--bg-quaternary, #e5f9ec);
+  padding: 2px 8px;
+  border-radius: 999px;
 }
 
 /* Trust-bar under filters */

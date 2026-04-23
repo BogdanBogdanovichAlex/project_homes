@@ -225,6 +225,9 @@ function zx_price_short($v){
         </div>
         <div class="zx-proj-card__body">
           <h3 class="zx-proj-card__title font__HEADING_CARD_TITLE"><?=htmlspecialchars($c['name'])?></h3>
+          <?if(!empty($c['preview'])):?>
+            <p class="zx-proj-card__sub"><?=strip_tags($c['preview'])?></p>
+          <?endif?>
           <div class="zx-proj-card__meta">
             <?if($c['square']):?>
               <span class="zx-proj-card__meta-item">
@@ -249,7 +252,10 @@ function zx_price_short($v){
             <div class="zx-proj-card__price zx-mono"><?=$c['priceRaw'] ? 'от '.zx_price_short($c['priceRaw']) : zx_price_short($c['priceRaw'])?></div>
             <?php $monthly = $c['priceRaw'] ? round($c['priceRaw'] * 0.0072 / 1000) * 1000 : 0; ?>
             <?if($monthly):?>
-              <div class="zx-proj-card__mortgage">~<?=number_format($monthly,0,',',' ')?> ₽/мес</div>
+              <div class="zx-proj-card__mortgage" title="Расчётный ежемесячный платёж по ипотеке, ставка от 6%, первый взнос 20%, срок 30 лет">
+                <span class="zx-proj-card__mortgage-label">в ипотеку</span>
+                от <?=number_format($monthly,0,',',' ')?> ₽/мес
+              </div>
             <?endif?>
           </div>
         </div>
@@ -359,29 +365,33 @@ function zx_price_short($v){
 .zx-doma-filter .c-sel--img__ROAD2 { width: 14px; height: 14px; opacity: .6; }
 
 /* Floors toggle chips */
-.zx-field--floors { }
-.zx-floors-chips { display: flex; gap: 8px; }
-.zx-floor-chip {
+.zx-doma-filter .zx-field--floors { }
+.zx-doma-filter .zx-floors-chips { display: flex; gap: 8px; }
+.zx-doma-filter button.zx-floor-chip {
   flex: 1 1 auto;
   min-width: 56px;
   height: 44px;
   padding: 0 16px;
-  border: 1.5px solid #CDD2DB;
-  border-radius: 12px;
-  background: #fff;
+  border: 1.5px solid #CDD2DB !important;
+  border-radius: 12px !important;
+  background: #fff !important;
   font-size: 15px;
   font-weight: 500;
   color: var(--text-primary,#11181C);
   cursor: pointer;
   transition: all .15s;
+  font-family: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
 }
-.zx-floor-chip:hover {
-  border-color: #00BF3F;
+.zx-doma-filter button.zx-floor-chip:hover {
+  border-color: #00BF3F !important;
   color: #00BF3F;
 }
-.zx-floor-chip.is-active {
-  background: #00BF3F;
-  border-color: #00BF3F;
+.zx-doma-filter button.zx-floor-chip.is-active {
+  background: #00BF3F !important;
+  border-color: #00BF3F !important;
   color: #fff;
   font-weight: 600;
   box-shadow: 0 2px 6px rgba(0,191,63,.25);
