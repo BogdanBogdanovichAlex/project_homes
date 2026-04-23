@@ -218,26 +218,39 @@ function zx_price_short($v){
           <?if($c['img']):?><img src="<?=$c['img']?>" alt="<?=htmlspecialchars($c['name'])?>" loading="lazy"><?endif?>
           <div class="zx-proj-card__badges">
             <span class="zx-chip <?=$statusClass?>"><span class="zx-chip__dot"></span><?=$statusLabel?></span>
-            <?if($c['material']):?><span class="zx-chip"><?=htmlspecialchars($c['material'])?></span><?endif?>
           </div>
+          <button type="button" class="zx-proj-card__fav" aria-label="В избранное" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('is-active');">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
         </div>
         <div class="zx-proj-card__body">
-          <div class="zx-proj-card__head">
-            <h3 class="zx-proj-card__title font__HEADING_CARD_TITLE"><?=htmlspecialchars($c['name'])?></h3>
-            <div class="zx-proj-card__price-wrap">
-              <div class="zx-proj-card__price zx-mono"><?=zx_price_short($c['priceRaw'])?></div>
-              <?php $monthly = $c['priceRaw'] ? round($c['priceRaw'] * 0.0072 / 1000) * 1000 : 0; ?>
-              <?if($monthly):?>
-                <div class="zx-proj-card__mortgage">~<?=number_format($monthly,0,',',' ')?> ₽/мес</div>
-              <?endif?>
-            </div>
+          <h3 class="zx-proj-card__title font__HEADING_CARD_TITLE"><?=htmlspecialchars($c['name'])?></h3>
+          <div class="zx-proj-card__meta">
+            <?if($c['square']):?>
+              <span class="zx-proj-card__meta-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h18v18H3z"/><path d="M3 9h3M3 15h3M9 3v3M15 3v3"/></svg>
+                <span><?=$c['square']?> м²</span>
+              </span>
+            <?endif?>
+            <?if($c['floors']):?>
+              <span class="zx-proj-card__meta-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V10l9-6 9 6v11"/><path d="M3 14h18"/></svg>
+                <span><?=$c['floors']?> эт.</span>
+              </span>
+            <?endif?>
+            <?if($c['material']):?>
+              <span class="zx-proj-card__meta-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18v4H3zM3 14h18v4H3z"/><path d="M8 6v4M14 6v4M6 14v4M12 14v4M18 14v4"/></svg>
+                <span><?=htmlspecialchars($c['material'])?></span>
+              </span>
+            <?endif?>
           </div>
-          <?if($c['preview']):?>
-            <div class="zx-proj-card__sub"><?=strip_tags($c['preview'])?></div>
-          <?endif?>
-          <div class="zx-proj-card__specs">
-            <?if($c['square']):?><span><b><?=$c['square']?></b> м²</span><?endif?>
-            <?if($c['floors']):?><span>·</span><span><b><?=$c['floors']?></b> эт.</span><?endif?>
+          <div class="zx-proj-card__price-row">
+            <div class="zx-proj-card__price zx-mono"><?=$c['priceRaw'] ? 'от '.zx_price_short($c['priceRaw']) : zx_price_short($c['priceRaw'])?></div>
+            <?php $monthly = $c['priceRaw'] ? round($c['priceRaw'] * 0.0072 / 1000) * 1000 : 0; ?>
+            <?if($monthly):?>
+              <div class="zx-proj-card__mortgage">~<?=number_format($monthly,0,',',' ')?> ₽/мес</div>
+            <?endif?>
           </div>
         </div>
       </a>

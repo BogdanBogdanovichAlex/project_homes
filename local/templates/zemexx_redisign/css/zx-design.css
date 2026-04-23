@@ -161,44 +161,96 @@
 .zx-filter-input:focus, .zx-filter-select:focus { outline: none; border-color: var(--text-accent); }
 
 /* ============ PROJECT CARD ============ */
+/* Выравнено с карточкой поселка: крупный title, мета-строки с иконками,
+   цена крупно снизу, сердечко-избранное в углу. */
 .zx-proj-card {
   cursor: pointer;
   background: var(--bg-tetriary, #fff);
   border: 1px solid #e6e8ec;
-  border-radius: 16px;
+  border-radius: 20px;
   overflow: hidden;
-  display: block;
+  display: flex;
+  flex-direction: column;
   color: inherit;
 }
 .zx-proj-card__img { aspect-ratio: 4 / 3; position: relative; }
-.zx-proj-card__badges { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; flex-wrap: wrap; z-index: 2; }
+.zx-proj-card__badges { position: absolute; top: 16px; left: 16px; display: flex; gap: 6px; flex-wrap: wrap; z-index: 2; }
+.zx-proj-card__badges .zx-chip {
+  background: #fff;
+  color: var(--text-primary);
+  border: 1px solid rgba(17,20,17,.06);
+  box-shadow: 0 1px 3px rgba(17,20,17,.08);
+}
+.zx-proj-card__badges .zx-chip--ready { background: var(--bg-quaternary, #e5f9ec); color: var(--text-accent); border-color: transparent; }
 .zx-proj-card__fav {
-  position: absolute; top: 12px; right: 12px; z-index: 2;
-  width: 36px; height: 36px; border-radius: 50%;
-  background: #fff; border: 1px solid #e6e8ec;
-  display: grid; place-items: center; color: var(--text-primary);
+  position: absolute; top: 16px; right: 16px; z-index: 2;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: #fff; border: 0;
+  box-shadow: 0 1px 3px rgba(17,20,17,.08);
+  display: grid; place-items: center;
+  color: var(--text-accent, #00bf3f);
+  cursor: pointer;
+  transition: transform .15s, background .15s;
+  padding: 0;
 }
-.zx-proj-card__body { padding: 20px; }
-.zx-proj-card__head {
-  display: flex; justify-content: space-between; align-items: baseline;
-  gap: 16px; margin-bottom: 6px;
+.zx-proj-card__fav:hover { transform: scale(1.05); }
+.zx-proj-card__fav.is-active svg { fill: var(--text-accent, #00bf3f); }
+.zx-proj-card__body {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
 }
-.zx-proj-card__title { margin: 0; }
-.zx-proj-card__price-wrap { text-align: right; flex-shrink: 0; }
-.zx-proj-card__price {
-  font-size: 15px; white-space: nowrap; font-weight: 700;
+.zx-proj-card__title {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
   color: var(--text-primary);
 }
-.zx-proj-card__mortgage {
-  font-size: 12px; color: var(--text-secondary); margin-top: 2px;
+.zx-proj-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.zx-proj-card__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+}
+.zx-proj-card__meta-item svg {
+  flex-shrink: 0;
+  color: var(--text-tertiary, #a3a5aa);
+}
+.zx-proj-card__price-row {
+  margin-top: auto;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+}
+.zx-proj-card__price {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
   white-space: nowrap;
 }
-.zx-proj-card__mortgage::before {
-  content: "🏦 "; font-size: 10px;
+.zx-proj-card__mortgage {
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
 }
-.zx-proj-card__sub { color: var(--text-secondary); font-size: 14px; margin-bottom: 14px; }
-.zx-proj-card__specs { display: flex; gap: 14px; font-size: 13px; color: var(--text-secondary); flex-wrap: wrap; }
-.zx-proj-card__specs b { color: var(--text-primary); font-weight: 600; }
 
 /* Trust-bar under filters */
 .zx-trustbar { background: var(--bg-secondary); padding: 14px 0; margin-bottom: 32px; }
