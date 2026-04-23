@@ -1,0 +1,769 @@
+/* ================================================================
+   Zemex — Калькулятор ипотеки / рассрочки v5 (site-native redesign)
+   Подтянуто под токены /local/templates/zemexx_redisign/css/main.css
+   ─ Шрифты: Montserrat (заголовки), PT Sans (текст)
+   ─ Палитра: бг #f4f6f9 (body), карточки #fff, аксент #00bf3f
+   ================================================================ */
+
+.zxc {
+  /* Токены — зеркалим site main.css */
+  --zxc-green:      #00bf3f;
+  --zxc-green-2:    #06ac3e;
+  --zxc-green-soft: #e5f9ec;
+  --zxc-green-2nd:  #f3fdef;
+
+  --zxc-ink:        #030813;   /* text-primary  */
+  --zxc-ink-2:      #6f737a;   /* text-secondary */
+  --zxc-ink-3:      #a3a5aa;   /* text-tertiary */
+
+  --zxc-surface:    #ffffff;
+  --zxc-surface-2:  #f9fbfc;   /* bg-primary */
+  --zxc-surface-3:  #f4f6f9;   /* bg-secondary */
+  --zxc-border:     #d8e2eb;   /* border-primary-strong */
+  --zxc-border-2:   #e6eaf0;
+
+  --zxc-shadow-sm:  0 2px 10px rgba(7, 23, 53, .05);
+  --zxc-shadow-md:  0 12px 32px rgba(7, 23, 53, .08);
+
+  --zxc-r-xl:       28px;
+  --zxc-r-lg:       20px;
+  --zxc-r-md:       14px;
+  --zxc-r-sm:       10px;
+
+  background: transparent;
+  padding: 96px 0;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--zxc-ink);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.zxc *, .zxc *::before, .zxc *::after { box-sizing: border-box; }
+.zxc button { font-family: inherit; }
+
+/* Сетка сайта */
+.zxc__wrap {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+@media (min-width: 1440px) { .zxc__wrap { padding: 0 64px; } }
+@media (min-width: 1920px) { .zxc__wrap { padding: 0 72px; max-width: 1920px; } }
+
+/* ── Заголовок ──────────────────────────────────────────────── */
+.zxc__head { margin: 0 0 40px; }
+.zxc__title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: clamp(28px, 3.2vw, 44px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--zxc-ink);
+  margin: 0 0 16px;
+}
+.zxc__sub {
+  font-family: 'PT Sans', sans-serif;
+  font-size: clamp(15px, 1.1vw, 18px);
+  font-weight: 400;
+  color: var(--zxc-ink-2);
+  margin: 0;
+  max-width: 820px;
+  line-height: 1.5;
+}
+
+/* ── 2 колонки ──────────────────────────────────────────────── */
+.zxc__body {
+  display: grid;
+  grid-template-columns: minmax(420px, 460px) 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Левая колонка: калькулятор (светлая карточка)
+   ══════════════════════════════════════════════════════════════ */
+.zxc__calc {
+  background: var(--zxc-surface);
+  border-radius: var(--zxc-r-xl);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border: 1px solid var(--zxc-border);
+  box-shadow: var(--zxc-shadow-sm);
+  position: sticky;
+  top: 24px;
+}
+
+/* Программы */
+.zxc__prog { display: flex; flex-direction: column; gap: 12px; }
+.zxc__prog-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--zxc-ink-2);
+  letter-spacing: 0.01em;
+}
+
+.zxc__prog-all {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--zxc-ink);
+  color: #fff;
+  border: none;
+  border-radius: var(--zxc-r-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s, transform .1s;
+  letter-spacing: -0.01em;
+}
+.zxc__prog-all:hover { background: #1a2030; }
+.zxc__prog-all:active { transform: scale(.99); }
+.zxc__prog-all svg { transition: transform .2s; flex-shrink: 0; }
+.zxc__prog-all.prog-inactive {
+  background: var(--zxc-surface-3);
+  color: var(--zxc-ink);
+  font-weight: 500;
+  border: 1px solid var(--zxc-border-2);
+}
+.zxc__prog-all.prog-inactive:hover { background: #eef0f4; }
+.zxc__prog-all.prog-inactive svg { opacity: .5; }
+
+/* Dropdown: список программ по умолчанию скрыт */
+.zxc__prog-tabs {
+  display: flex;
+  /* display: none; — всегда открыто */
+  flex-wrap: wrap;
+  gap: 6px;
+  animation: zxcProgFade .18s ease-out;
+}
+.zxc__prog--open .zxc__prog-tabs { display: flex; }
+.zxc__prog--open .zxc__prog-all svg { transform: rotate(180deg); }
+.zxc__prog-all svg { transition: transform .2s; }
+
+@keyframes zxcProgFade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Если выбрана конкретная программа — показываем её «чип» возле кнопки */
+.zxc__prog-current {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--zxc-green-soft);
+  color: var(--zxc-green-2);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+.zxc__prog-current-close {
+  width: 16px; height: 16px;
+  border: none; background: transparent;
+  cursor: pointer; color: inherit;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0; line-height: 1;
+}
+.zxc__prog-current-close:hover { opacity: .6; }
+.zxc__prog-current:empty { display: none; }
+
+.zxc__prog-tabs--visible { display: flex !important; }
+.zxc__prog-tab {
+  padding: 9px 14px;
+  background: var(--zxc-surface-3);
+  color: var(--zxc-ink-2);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s;
+  line-height: 1.15;
+}
+.zxc__prog-tab:hover {
+  background: var(--zxc-green-soft);
+  color: var(--zxc-green-2);
+}
+.zxc__prog-tab.active {
+  background: var(--zxc-green);
+  color: #fff;
+  font-weight: 600;
+}
+
+.zxc__rate-hint {
+  font-size: 12px;
+  color: var(--zxc-ink-2);
+  min-height: 16px;
+  font-weight: 500;
+}
+.zxc__rate-hint:empty { min-height: 0; }
+
+/* Слайдеры */
+.zxc__slider { display: flex; flex-direction: column; gap: 10px; }
+.zxc__slider-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.zxc__slider-label {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 13px;
+  color: var(--zxc-ink-2);
+  font-weight: 400;
+  line-height: 1.2;
+  flex: 1;
+}
+
+.zxc__slider-val {
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--zxc-border);
+  color: var(--zxc-ink);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 4px 0;
+  text-align: right;
+  width: 140px;
+  outline: none;
+  transition: border-color .2s;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.zxc__slider-val:focus { border-bottom-color: var(--zxc-green); }
+
+.zxc__slider-val-duo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1.5px solid var(--zxc-border);
+  padding-bottom: 4px;
+}
+.zxc__slider-val-duo:focus-within { border-bottom-color: var(--zxc-green); }
+.zxc__slider-val-duo .zxc__slider-val {
+  width: 90px;
+  border-bottom: none;
+  padding: 0;
+}
+.zxc__slider-sep { color: var(--zxc-ink-3); font-size: 14px; }
+.zxc__slider-pct, .zxc__slider-unit {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--zxc-ink);
+  white-space: nowrap;
+}
+.zxc__slider-unit { color: var(--zxc-ink-2); font-weight: 500; }
+
+/* Трек */
+.zxc__track {
+  position: relative;
+  height: 22px;
+  display: flex;
+  align-items: center;
+}
+.zxc__track-fill {
+  position: absolute;
+  left: 0;
+  height: 5px;
+  background: var(--zxc-green);
+  border-radius: 3px;
+  pointer-events: none;
+  width: 0;
+}
+.zxc__range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 5px;
+  background: var(--zxc-surface-3);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  margin: 0;
+}
+.zxc__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--zxc-green);
+  box-shadow: 0 3px 10px rgba(0, 191, 63, .22);
+  cursor: grab;
+  transition: transform .15s;
+}
+.zxc__range::-webkit-slider-thumb:hover { transform: scale(1.08); }
+.zxc__range::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.12); }
+.zxc__range::-moz-range-thumb {
+  width: 22px; height: 22px;
+  border: 3px solid var(--zxc-green);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 3px 10px rgba(0, 191, 63, .22);
+  cursor: grab;
+}
+.zxc__track-limits {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--zxc-ink-3);
+  margin-top: -2px;
+  font-family: 'PT Sans', sans-serif;
+}
+
+/* Результат */
+.zxc__result {
+  background: var(--zxc-surface-2);
+  border-radius: var(--zxc-r-md);
+  padding: 18px 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid var(--zxc-border-2);
+}
+.zxc__result-meta { flex: 1; min-width: 0; }
+.zxc__result-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--zxc-ink-2);
+  margin-bottom: 6px;
+  letter-spacing: 0.01em;
+}
+.zxc__result-hint {
+  display: block;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 11px;
+  color: var(--zxc-ink-3);
+  line-height: 1.45;
+  font-weight: 400;
+}
+.zxc__result-val {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--zxc-ink);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1;
+  padding-top: 2px;
+}
+
+/* CTA */
+.zxc__cta {
+  width: 100%;
+  padding: 17px 20px;
+  background: var(--zxc-green);
+  color: #fff;
+  border: none;
+  border-radius: var(--zxc-r-md);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s, transform .1s, box-shadow .2s;
+  letter-spacing: -0.01em;
+  box-shadow: 0 4px 14px rgba(0, 191, 63, .22);
+}
+.zxc__cta:hover { background: var(--zxc-green-2); box-shadow: 0 6px 18px rgba(0, 191, 63, .3); }
+.zxc__cta:active { transform: scale(.985); }
+
+/* ══════════════════════════════════════════════════════════════
+   Правая колонка: список предложений
+   ══════════════════════════════════════════════════════════════ */
+.zxc__right { min-height: 400px; }
+.zxc__panel { display: flex; flex-direction: column; gap: 10px; }
+
+.zxc__panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 4px 8px;
+}
+.zxc__panel-count {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 14px;
+  color: var(--zxc-ink-2);
+  font-weight: 400;
+}
+.zxc__panel-count b {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--zxc-ink);
+  font-weight: 600;
+}
+
+.zxc__sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--zxc-ink-2);
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background .2s, color .2s;
+}
+.zxc__sort-btn:hover { background: var(--zxc-surface-3); color: var(--zxc-ink); }
+.zxc__sort-btn svg { transition: transform .2s; }
+.zxc__sort-btn.is-desc svg { transform: rotate(180deg); }
+
+/* Группа банков */
+.zxc__group {
+  background: var(--zxc-surface);
+  border-radius: var(--zxc-r-lg);
+  overflow: hidden;
+  border: 1px solid var(--zxc-border);
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+.zxc__group:hover {
+  border-color: #c2cedd;
+  box-shadow: var(--zxc-shadow-sm);
+}
+.zxc__group--open {
+  border-color: var(--zxc-green);
+  box-shadow: 0 4px 18px rgba(0, 191, 63, .1);
+}
+
+.zxc__group-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  cursor: pointer;
+  user-select: none;
+}
+.zxc__group-rate {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--zxc-green);
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+  min-width: 90px;
+}
+.zxc__group-meta {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 14px;
+  color: var(--zxc-ink-2);
+  flex: 1;
+  line-height: 1.35;
+}
+.zxc__group-monthly {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: var(--zxc-ink);
+}
+.zxc__group-period { color: var(--zxc-ink-2); }
+
+.zxc__apply-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 18px;
+  border: 1.5px solid var(--zxc-green);
+  background: transparent;
+  border-radius: var(--zxc-r-sm);
+  color: var(--zxc-green);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .2s, color .2s, transform .1s;
+  flex-shrink: 0;
+  letter-spacing: -0.01em;
+}
+.zxc__apply-btn:hover { background: var(--zxc-green); color: #fff; }
+.zxc__apply-btn:active { transform: scale(.97); }
+
+.zxc__expand-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--zxc-surface-3);
+  border: none;
+  cursor: pointer;
+  color: var(--zxc-ink-2);
+  transition: background .2s, transform .3s cubic-bezier(.4,0,.2,1), color .2s;
+  flex-shrink: 0;
+  padding: 0;
+}
+.zxc__expand-btn:hover { background: var(--zxc-green-soft); color: var(--zxc-green); }
+.zxc__group--open .zxc__expand-btn {
+  background: var(--zxc-green);
+  color: #fff;
+  transform: rotate(180deg);
+}
+
+/* Банки (внутри группы) */
+.zxc__group-banks {
+  display: none;
+  flex-direction: column;
+  padding: 4px 20px 16px;
+  background: linear-gradient(180deg, var(--zxc-surface-2) 0%, transparent 100%);
+  border-top: 1px solid var(--zxc-border-2);
+}
+.zxc__group--open .zxc__group-banks { display: flex; }
+
+.zxc__bank {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--zxc-border-2);
+}
+.zxc__bank:last-of-type { border-bottom: none; }
+.zxc__bank-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
+.zxc__bank-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.zxc__bank-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--zxc-ink);
+  letter-spacing: -0.01em;
+}
+.zxc__bank-rate {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 12.5px;
+  color: var(--zxc-ink-2);
+  line-height: 1.4;
+}
+.zxc__bank-rate b {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--zxc-green);
+  font-weight: 700;
+}
+.zxc__bank-rate .js-bank-monthly {
+  color: var(--zxc-ink);
+  font-weight: 600;
+}
+.zxc__bank-details {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 11px;
+  color: var(--zxc-ink-3);
+  line-height: 1.4;
+}
+
+.zxc__collapse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  color: var(--zxc-green);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 6px;
+  border-radius: var(--zxc-r-sm);
+  transition: background .2s;
+}
+.zxc__collapse-btn:hover { background: var(--zxc-green-soft); }
+
+/* ── Карточки рассрочки ─────────────────────────────────────── */
+.zxc__panel--inst { gap: 14px; }
+.zxc__pcard {
+  background: var(--zxc-surface);
+  border-radius: var(--zxc-r-lg);
+  padding: 24px 26px;
+  border: 1px solid var(--zxc-border);
+  transition: border-color .2s, box-shadow .2s;
+}
+.zxc__pcard:hover { border-color: #c2cedd; box-shadow: var(--zxc-shadow-sm); }
+.zxc__pcard--active {
+  background: linear-gradient(135deg, var(--zxc-green) 0%, #00a838 100%);
+  border-color: var(--zxc-green);
+  box-shadow: 0 8px 28px rgba(0, 191, 63, .24);
+}
+.zxc__pcard-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--zxc-ink);
+  margin: 0 0 18px;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+.zxc__pcard--active .zxc__pcard-title { color: #fff; }
+
+.zxc__pcard-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 16px;
+  align-items: start;
+}
+.zxc__pcard-col { display: flex; flex-direction: column; gap: 4px; }
+.zxc__pcard-label {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--zxc-ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+.zxc__pcard--active .zxc__pcard-label { color: rgba(255,255,255,.75); }
+.zxc__pcard-val {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--zxc-ink);
+  letter-spacing: -0.01em;
+}
+.zxc__pcard--active .zxc__pcard-val { color: #fff; }
+.zxc__pcard-sub {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 11px;
+  color: var(--zxc-ink-3);
+  line-height: 1.4;
+}
+.zxc__pcard--active .zxc__pcard-sub { color: rgba(255,255,255,.7); }
+.zxc__pcard-col--total { text-align: right; align-items: flex-end; }
+.zxc__pcard-total {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--zxc-ink);
+  letter-spacing: -0.02em;
+}
+.zxc__pcard--active .zxc__pcard-total { color: #fff; }
+.zxc__pcard-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: var(--zxc-green-soft);
+  color: var(--zxc-green-2);
+  border-radius: 999px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+.zxc__pcard--active .zxc__pcard-badge {
+  background: rgba(255,255,255,.22);
+  color: #fff;
+}
+
+.zxc__pcard-foot {
+  margin-top: 22px;
+  display: flex;
+  justify-content: flex-end;
+}
+.zxc__apply-btn--inst {
+  padding: 11px 22px;
+  font-size: 14px;
+}
+.zxc__pcard--active .zxc__apply-btn--inst {
+  border-color: #fff;
+  color: #fff;
+  background: rgba(255,255,255,.08);
+}
+.zxc__pcard--active .zxc__apply-btn--inst:hover {
+  background: #fff;
+  color: var(--zxc-green);
+}
+
+/* ── Адаптив ────────────────────────────────────────────────── */
+@media (max-width: 1199px) {
+  .zxc__body { grid-template-columns: 400px 1fr; }
+}
+@media (max-width: 991px) {
+  .zxc__body { grid-template-columns: 1fr; gap: 20px; }
+  .zxc__calc { position: static; }
+}
+@media (max-width: 640px) {
+  .zxc { padding: 56px 0; }
+  .zxc__wrap { padding: 0 16px; }
+  .zxc__head { margin-bottom: 28px; }
+  .zxc__calc { padding: 22px; border-radius: 22px; }
+  .zxc__result { padding: 14px 16px; }
+  .zxc__result-val { font-size: 22px; }
+  .zxc__group-head { flex-wrap: wrap; padding: 14px 16px; }
+  .zxc__group-rate { font-size: 20px; min-width: 78px; }
+  .zxc__group-meta { font-size: 13px; }
+  .zxc__apply-btn { font-size: 12px; padding: 8px 14px; }
+  .zxc__group-banks { padding: 4px 16px 14px; }
+  .zxc__bank { gap: 10px; }
+  .zxc__bank-logo { width: 38px; height: 38px; font-size: 14px; }
+  .zxc__pcard { padding: 20px; }
+  .zxc__pcard-body { grid-template-columns: 1fr 1fr; }
+  .zxc__pcard-col--total { grid-column: 1 / -1; align-items: flex-start; text-align: left; }
+  .zxc__pcard-total { font-size: 20px; }
+  .zxc__pcard-foot { justify-content: stretch; }
+  .zxc__apply-btn--inst { width: 100%; }
+}
+
+/* Логотип банка из инфоблока */
+.zxc__bank-logo--img {
+  background: #fff;
+  padding: 6px;
+  border: 1px solid var(--border-primary-strong, #d8e2eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.zxc__bank-logo--img img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Закрытие модалки ипотеки */
+.zxc-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: #f2f4f7;
+  color: #030813;
+  border-radius: 50%;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background .15s;
+}
+.zxc-modal__close:hover { background: #e4e7ec; }
+.zxc-modal form { position: relative; }
