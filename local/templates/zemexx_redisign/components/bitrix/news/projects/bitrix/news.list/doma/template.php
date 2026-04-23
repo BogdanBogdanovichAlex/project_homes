@@ -363,23 +363,28 @@ function zx_price_short($v){
 .zx-floors-chips { display: flex; gap: 8px; }
 .zx-floor-chip {
   flex: 1 1 auto;
-  min-width: 52px;
+  min-width: 56px;
   height: 44px;
-  padding: 0 14px;
-  border: 1px solid #E5E7EB;
+  padding: 0 16px;
+  border: 1.5px solid #CDD2DB;
   border-radius: 12px;
   background: #fff;
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 500;
   color: var(--text-primary,#11181C);
   cursor: pointer;
   transition: all .15s;
 }
-.zx-floor-chip:hover { border-color: #C7CCD4; }
+.zx-floor-chip:hover {
+  border-color: #00BF3F;
+  color: #00BF3F;
+}
 .zx-floor-chip.is-active {
   background: #00BF3F;
   border-color: #00BF3F;
   color: #fff;
-  font-weight: 500;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,191,63,.25);
 }
 
 /* Price range */
