@@ -1060,40 +1060,55 @@ body > .breadcrumbs{display:none !important;}
     border-radius:20px;overflow:hidden;
     box-shadow:0 4px 20px rgba(3,8,19,.04);
 }
-@media(min-width:1000px){
-    .doma-detail-v2__bar{grid-template-columns:1fr auto;align-items:stretch;}
+@media(min-width:1100px){
+    .doma-detail-v2__bar{grid-template-columns:1fr minmax(340px,auto);align-items:stretch;}
 }
 
 .doma-detail-v2__bar-stats{
-    display:flex;flex-wrap:wrap;gap:0;
-    padding:20px 24px;background:var(--bg-secondary,#f5f7fa);
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:4px 0;
+    padding:20px 24px;background:#fff;
 }
-.doma-detail-v2__bar-stat{
-    flex:1 1 auto;min-width:120px;
-    padding:8px 20px 8px 0;margin-right:20px;
-    border-right:1px solid var(--deviders,#e5e7eb);
-    display:flex;flex-direction:column;gap:4px;
-}
-.doma-detail-v2__bar-stat:last-child{border-right:0;margin-right:0;}
-.doma-detail-v2__bar-stat span{color:var(--text-secondary);font-size:12px;text-transform:uppercase;letter-spacing:.5px;}
-.doma-detail-v2__bar-stat b{color:var(--text-primary);font-size:18px;font-weight:700;line-height:1.2;}
+@media(min-width:640px){.doma-detail-v2__bar-stats{grid-template-columns:repeat(3,1fr);}}
+@media(min-width:1100px){.doma-detail-v2__bar-stats{grid-template-columns:repeat(5,1fr);padding:24px 28px;}}
 
-@media(max-width:720px){
-    .doma-detail-v2__bar-stat{flex:1 1 45%;border-right:0;padding:8px 0;margin-right:0;border-bottom:1px solid var(--deviders,#e5e7eb);}
+.doma-detail-v2__bar-stat{
+    display:flex;flex-direction:column;gap:4px;
+    padding:12px 16px 12px 0;
+    position:relative;
+}
+.doma-detail-v2__bar-stat + .doma-detail-v2__bar-stat::before{
+    content:"";position:absolute;left:0;top:16px;bottom:16px;width:1px;
+    background:var(--deviders,#e5e7eb);
+}
+@media(max-width:639px){
+    .doma-detail-v2__bar-stat + .doma-detail-v2__bar-stat::before{display:none;}
+    .doma-detail-v2__bar-stat:nth-child(odd) + .doma-detail-v2__bar-stat::before{display:none;}
+    .doma-detail-v2__bar-stat{padding:10px 12px;border-bottom:1px solid var(--deviders,#e5e7eb);}
     .doma-detail-v2__bar-stat:nth-last-child(-n+2){border-bottom:0;}
 }
+@media(min-width:640px){
+    .doma-detail-v2__bar-stat{padding-left:16px;padding-right:16px;}
+    .doma-detail-v2__bar-stat:first-child{padding-left:0;}
+}
+.doma-detail-v2__bar-stat svg{
+    color:var(--text-accent,#00bf3f);
+    margin-bottom:4px;
+}
+.doma-detail-v2__bar-stat span{color:var(--text-secondary);font-size:11px;text-transform:uppercase;letter-spacing:.6px;font-weight:500;}
+.doma-detail-v2__bar-stat b{color:var(--text-primary);font-size:17px;font-weight:700;line-height:1.2;margin-top:2px;}
 
 .doma-detail-v2__bar-price{
     background:linear-gradient(135deg,#0a3d1a 0%,#005f26 55%,#00bf3f 100%);
-    color:#fff;padding:20px 24px;
-    display:flex;flex-direction:column;gap:14px;justify-content:center;
+    color:#fff;padding:24px 28px;
+    display:flex;flex-direction:column;gap:16px;justify-content:center;
     min-width:320px;
 }
-@media(min-width:1000px){.doma-detail-v2__bar-price{flex-direction:row;align-items:center;gap:24px;}}
-.doma-detail-v2__bar-price > div:first-child{display:flex;flex-direction:column;gap:2px;}
-.doma-detail-v2__bar-price-label{color:rgba(255,255,255,.78);font-size:12px;text-transform:uppercase;letter-spacing:.5px;}
-.doma-detail-v2__bar-price-val{color:#fff;font-size:26px;font-weight:700;line-height:1.1;}
-.doma-detail-v2__bar-price-sub{color:rgba(255,255,255,.82);font-size:13px;margin-top:2px;}
+.doma-detail-v2__bar-price-inner{display:flex;flex-direction:column;gap:2px;}
+.doma-detail-v2__bar-price-label{color:rgba(255,255,255,.78);font-size:11px;text-transform:uppercase;letter-spacing:.6px;font-weight:500;}
+.doma-detail-v2__bar-price-val{color:#fff;font-size:32px;font-weight:800;line-height:1.1;letter-spacing:-.02em;margin-top:2px;}
+.doma-detail-v2__bar-price-sub{color:rgba(255,255,255,.82);font-size:13px;margin-top:6px;}
 
 .doma-detail-v2__bar-btns{display:flex;flex-direction:column;gap:8px;min-width:200px;}
 @media(max-width:540px){.doma-detail-v2__bar-btns{width:100%;}}

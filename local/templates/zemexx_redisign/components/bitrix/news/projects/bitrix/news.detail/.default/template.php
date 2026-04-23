@@ -68,9 +68,25 @@ if(empty($heroSlides)) $heroSlides[] = SITE_TEMPLATE_PATH.'/images/placeholder.j
 // Калькулятор — база
 $basePrice  = $priceInt ?: 5000000;
 $baseSquare = !empty($properties['SQUARE']) ? (float)$properties['SQUARE'] : 100;
+
+// Derived floors (iblock не имеет FLOORS — считаем по наличию 2-го этажа)
+$floorsDerived = !empty($properties['SECOND_FLOOR_IMG']) || !empty($properties['SECOND_FLOOR_DESC']) ? 2 : 1;
+$buildTimeText = !empty($properties['BUILD_TIME']) ? $properties['BUILD_TIME'] : 'до 90 дней';
 ?>
 <style>body > .breadcrumbs, .content > .breadcrumbs, .bx-breadcrumb{display:none !important;}</style>
 <div class="zx-scope">
+
+  <!-- Хлебные крошки — отдельная полоса над hero -->
+  <nav class="zx-detail-bc" aria-label="Хлебные крошки">
+    <div class="c-sel--div__CONTAINER">
+      <ol>
+        <li><a href="/">Главная</a></li>
+        <li><a href="/doma-i-kottedzhi/">Дома и&nbsp;коттеджи</a></li>
+        <li><span><?=htmlspecialchars($fullName)?></span></li>
+      </ol>
+    </div>
+  </nav>
+
   <!-- HERO (из бэкапа) -->
   <section class="doma-detail-v2__hero">
     <div class="vp-hero--div__SWIPER swiper doma-detail-v2__swiper">
@@ -86,11 +102,6 @@ $baseSquare = !empty($properties['SQUARE']) ? (float)$properties['SQUARE'] : 100
       <?endif?>
 
       <div class="doma-detail-v2__hero-content">
-        <ul class="doma-detail-v2__bc">
-          <li><a class="font__BODY_TEXT_CAPTION" href="/">Главная</a></li>
-          <li><a class="font__BODY_TEXT_CAPTION" href="/doma-i-kottedzhi/"><span>●</span>Дома и коттеджи</a></li>
-        </ul>
-
         <div class="doma-detail-v2__heroInfo">
           <div class="doma-detail-v2__tags">
             <span class="doma-detail-v2__tag doma-detail-v2__tag--hot font__BODY_TEXT_CAPTION">🔥 Осталось 2 слота на сезон</span>
@@ -139,28 +150,37 @@ $baseSquare = !empty($properties['SQUARE']) ? (float)$properties['SQUARE'] : 100
       <div class="doma-detail-v2__bar">
         <div class="doma-detail-v2__bar-stats">
           <?if(!empty($properties['SQUARE'])):?>
-            <div class="doma-detail-v2__bar-stat"><span>Площадь</span><b><?=$properties['SQUARE']?> м²</b></div>
+            <div class="doma-detail-v2__bar-stat">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h18v18H3z"/><path d="M3 9h3M3 15h3M9 3v3M15 3v3"/></svg>
+              <span>Площадь</span><b><?=$properties['SQUARE']?> м²</b>
+            </div>
           <?endif?>
-          <?if(!empty($properties['FLOORS'])):?>
-            <div class="doma-detail-v2__bar-stat"><span>Этажность</span><b><?=$properties['FLOORS']?></b></div>
-          <?endif?>
-          <?if(!empty($properties['BEDROOMS'])):?>
-            <div class="doma-detail-v2__bar-stat"><span>Спальни</span><b><?=$properties['BEDROOMS']?></b></div>
-          <?endif?>
-          <?if(!empty($properties['BUILD_TIME'])):?>
-            <div class="doma-detail-v2__bar-stat"><span>Срок</span><b><?=htmlspecialchars($properties['BUILD_TIME'])?></b></div>
-          <?endif?>
+          <div class="doma-detail-v2__bar-stat">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V10l9-6 9 6v11"/><path d="M3 14h18"/></svg>
+            <span>Этажность</span><b><?=$floorsDerived?></b>
+          </div>
           <?if($material):?>
-            <div class="doma-detail-v2__bar-stat"><span>Материал</span><b><?=htmlspecialchars($material)?></b></div>
+            <div class="doma-detail-v2__bar-stat">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18v4H3zM3 14h18v4H3z"/><path d="M8 6v4M14 6v4M6 14v4M12 14v4M18 14v4"/></svg>
+              <span>Материал</span><b><?=htmlspecialchars($material)?></b>
+            </div>
           <?endif?>
+          <div class="doma-detail-v2__bar-stat">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <span>Срок сдачи</span><b><?=htmlspecialchars($buildTimeText)?></b>
+          </div>
+          <div class="doma-detail-v2__bar-stat">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+            <span>Гарантия</span><b>5 лет</b>
+          </div>
         </div>
         <div class="doma-detail-v2__bar-price">
           <?if($priceInt):?>
-            <div>
+            <div class="doma-detail-v2__bar-price-inner">
               <span class="doma-detail-v2__bar-price-label">Стоимость от</span>
               <b class="doma-detail-v2__bar-price-val"><?=number_format($priceInt,0,',',' ')?> ₽</b>
               <?if($priceMonthly):?>
-                <span class="doma-detail-v2__bar-price-sub">🏦 В ипотеку ~ <?=number_format($priceMonthly,0,',',' ')?> ₽ / мес · от 6%</span>
+                <span class="doma-detail-v2__bar-price-sub">🏦 В ипотеку ~ <?=number_format($priceMonthly,0,',',' ')?> ₽/мес · от 6%</span>
               <?endif?>
             </div>
           <?endif?>

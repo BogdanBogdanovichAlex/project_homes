@@ -512,13 +512,32 @@
 @media (max-width: 760px) {
   .doma-detail-v2__swiper .swiper-pagination { bottom: 70px !important; }
 }
-/* Преимущества — лёгкое перекрытие нижней части hero */
-.doma-detail-v2__hero { margin-bottom: -40px; }
-.zemex-hero-advantages { position: relative; z-index: 5; }
+/* Hero и advantages — без перекрытия (иначе пагинация прячется за плашкой) */
+.doma-detail-v2__hero { margin-bottom: 0; }
+.zemex-hero-advantages { position: relative; z-index: 5; margin-top: -48px; }
 .zemex-hero-advantages .c-sel--div__CONTAINER { padding-bottom: 0; }
-@media (max-width: 900px) {
-  .doma-detail-v2__hero { margin-bottom: -20px; }
+@media (max-width: 900px) { .zemex-hero-advantages { margin-top: -32px; } }
+/* Пагинация поднимается над плашкой преимуществ */
+.doma-detail-v2__swiper .swiper-pagination { bottom: 24px !important; }
+@media (min-width: 768px) { .doma-detail-v2__swiper .swiper-pagination { bottom: 32px !important; } }
+@media (max-width: 760px) { .doma-detail-v2__swiper .swiper-pagination { bottom: 20px !important; } }
+
+/* Скрываем старые хлебные крошки внутри hero — теперь они выше, отдельной полосой */
+.doma-detail-v2__hero-content .doma-detail-v2__bc { display: none !important; }
+
+/* ============ ХЛЕБНЫЕ КРОШКИ (отдельная полоса над hero) ============ */
+.zx-detail-bc { background: #fff; border-bottom: 1px solid #EEF0F3; padding: 14px 0; }
+.zx-detail-bc ol {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px;
+  font-size: 13px; color: var(--text-secondary,#6F737A);
 }
+.zx-detail-bc li { display: inline-flex; align-items: center; gap: 10px; }
+.zx-detail-bc li + li::before { content: "/"; color: #C7CCD4; margin-right: 2px; }
+.zx-detail-bc a { color: var(--text-secondary,#6F737A); text-decoration: none; transition: color .15s; }
+.zx-detail-bc a:hover { color: var(--text-accent,#00BF3F); }
+.zx-detail-bc li:last-child span { color: var(--text-primary,#11181C); font-weight: 500; max-width: 520px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 640px){ .zx-detail-bc li:last-child span { max-width: 220px; } }
 /* Стрелки пролистывания */
 .doma-detail-v2__swiper .swiper-button-prev,
 .doma-detail-v2__swiper .swiper-button-next {
@@ -721,15 +740,24 @@
   .zx-manager__ctas .zx-btn { flex: 1; }
 }
 
-/* ============ FAQ ============ */
-.zx-faq { padding: 96px 0 0; }
+/* ============ FAQ (белый фон карточкой — как на главной) ============ */
+.zx-faq { background: #fff; padding: 56px 0; margin: 0; }
+@media (min-width: 992px) { .zx-faq { padding: 72px 0; } }
+.zx-faq .c-sel--div__CONTAINER > * + * { margin-top: 0; }
+.zx-faq .zx-section-head { margin-bottom: 32px; }
 .zx-faq__item {
-  border-bottom: 1px solid #e6e8ec;
-  padding: 20px 0;
+  border: 1px solid #ECEEF2;
+  border-radius: 16px;
+  padding: 4px 24px;
+  margin-bottom: 12px;
+  background: #fff;
+  transition: border-color .15s, box-shadow .15s;
 }
+.zx-faq__item:hover { border-color: #CDD2DB; }
+.zx-faq__item[open] { border-color: #CDD2DB; box-shadow: 0 2px 8px rgba(16,24,40,.04); }
 .zx-faq__item summary {
   display: flex; justify-content: space-between; align-items: center;
-  cursor: pointer; list-style: none; padding: 4px 0;
+  cursor: pointer; list-style: none; padding: 18px 0;
 }
 .zx-faq__item summary::-webkit-details-marker { display: none; }
 .zx-faq__plus {
@@ -748,7 +776,7 @@
 .zx-faq__item[open] .zx-faq__plus { background: var(--text-primary); }
 .zx-faq__item[open] .zx-faq__plus::before { background: #fff; }
 .zx-faq__item[open] .zx-faq__plus::after { background: #fff; transform: rotate(0); }
-.zx-faq__body { padding: 16px 0 4px; color: var(--text-secondary); max-width: 860px; }
+.zx-faq__body { padding: 0 0 20px; color: var(--text-secondary); max-width: 860px; line-height: 1.55; }
 
 /* ============ STICKY MOBILE CTA ============ */
 .zx-sticky-cta {
