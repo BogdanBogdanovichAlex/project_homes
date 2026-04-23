@@ -80,6 +80,13 @@ function zx_price_short($v){
   <?if(!empty($cards)):?>
   <div class="c-sel--div__CONTAINER zx-doma-wrap">
 
+    <div class="zx-trustbar zx-trustbar--inline zx-trustbar--top">
+      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>Фикс. цена</b> в договоре</span></div>
+      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>Ипотека от 6%</b> · партнёрские ставки</span></div>
+      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>5 лет гарантии</b> на конструктив</span></div>
+      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>Сроки в договоре</b> · от 90 дней</span></div>
+    </div>
+
     <form name="zxFilterForm" action="javascript:void(0)" class="smartfilter zx-doma-filter" onsubmit="return false;">
       <div class="zx-doma-filter__row">
 
@@ -101,19 +108,13 @@ function zx_price_short($v){
         </fieldset>
 
         <?if($hasMultiFloors):?>
-        <fieldset class="c-sel--fieldset__DIST bx-filter-parameters-box zx-field">
-          <span class="bx-filter-container-modef"></span>
-          <legend class="font__BODY_TEXT_CAPTION">Этажность</legend>
-          <label class="c-sel--label__DIST font__BODY_TEXT_PRIMARY">
-            1<input type="radio" name="zxFloors" value="1">
-          </label>
-          <label class="c-sel--label__DIST font__BODY_TEXT_PRIMARY">
-            2<input type="radio" name="zxFloors" value="2">
-          </label>
-          <input class="c-sel--input__DIST_HIDDEN" style="display:none;" type="radio" name="zxFloors" checked>
-          <input class="min-price from-mkad" type="hidden" name="zxFloorsMin" id="zxFloorsMin" value="">
-          <input class="max-price from-mkad" type="hidden" name="zxFloorsMax" id="zxFloorsMax" value="">
-        </fieldset>
+        <div class="zx-field zx-field--floors">
+          <span class="zx-field__legend">Этажность</span>
+          <div class="zx-floors-chips" role="group" aria-label="Этажность">
+            <button type="button" class="zx-floor-chip" data-zx-floor="1">1</button>
+            <button type="button" class="zx-floor-chip" data-zx-floor="2">2</button>
+          </div>
+        </div>
         <?endif?>
 
         <label class="c-sel--label__RANGE font__BODY_TEXT_CAPTION bx-filter-parameters-box zx-field zx-field--range">
@@ -182,13 +183,6 @@ function zx_price_short($v){
         <button type="button" class="zx-doma-filter__reset" id="zxResetBottom">× Сбросить</button>
       </div>
     </form>
-
-    <div class="zx-trustbar zx-trustbar--inline">
-      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>Фикс. цена</b> в договоре</span></div>
-      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>Ипотека от 6%</b> · партнёрские ставки</span></div>
-      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>5 лет гарантии</b> на конструктив</span></div>
-      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>Сроки в договоре</b> · от 90 дней</span></div>
-    </div>
 
     <div class="zx-doma-toolbar">
       <div class="zx-doma-toolbar__result font__BODY_TEXT_PRIMARY">
@@ -259,109 +253,180 @@ function zx_price_short($v){
 </div>
 
 <style>
-.zx-doma-wrap { padding-top: 16px; padding-bottom: 48px; }
+.zx-doma-wrap { padding-top: 0; padding-bottom: 48px; }
 
-.zx-doma-filter { margin: 0 0 12px; }
+/* Trustbar — top */
+.zx-trustbar--top {
+  margin: 20px 0 20px;
+  padding: 14px 18px;
+  background: #F4F9F5;
+  border: 1px solid #D6EBD9;
+  border-radius: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+}
+.zx-trustbar--top .zx-trustbar__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-secondary,#6F737A);
+}
+.zx-trustbar--top .zx-trustbar__item b { color: var(--text-primary,#11181C); font-weight: 600; }
+.zx-trustbar--top .zx-trustbar__icon {
+  display: inline-flex;
+  width: 18px; height: 18px;
+  align-items: center; justify-content: center;
+  color: #fff;
+  background: #00BF3F;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Filter card */
+.zx-doma-filter {
+  margin: 0 0 16px;
+  padding: 20px 22px;
+  background: #fff;
+  border: 1px solid #ECECEC;
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(16,24,40,.04);
+}
 
 .zx-doma-filter__row {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px 16px;
+  gap: 14px 18px;
   align-items: end;
 }
 @media (min-width: 720px){
   .zx-doma-filter__row { grid-template-columns: repeat(2, minmax(0,1fr)); }
 }
 @media (min-width: 1080px){
-  .zx-doma-filter__row { grid-template-columns: minmax(180px,1.1fr) minmax(150px,0.9fr) minmax(260px,1.6fr) minmax(180px,1.1fr); }
+  .zx-doma-filter__row { grid-template-columns: minmax(180px,1.1fr) minmax(140px,0.7fr) minmax(280px,1.8fr) minmax(180px,1.1fr); }
 }
 
-.zx-doma-filter .zx-field { min-width: 0; margin: 0; padding: 0; border: 0; }
-.zx-doma-filter .zx-field > legend { display:block; padding:0; margin:0 0 6px; font-size:12px; color: var(--text-secondary,#6F737A); }
+.zx-doma-filter .zx-field { min-width: 0; margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; }
+.zx-doma-filter .zx-field > legend,
+.zx-doma-filter .zx-field__legend {
+  display: block;
+  padding: 0;
+  margin: 0 0 6px;
+  font-size: 12px;
+  line-height: 1;
+  color: #8A8F99;
+  letter-spacing: .01em;
+}
 
+/* Dropdown buttons (Material, Area) */
 .zx-doma-filter .c-sel--button__ROAD,
-.zx-doma-filter .c-sel--button__ROAD2,
-.zx-doma-filter .c-sel--button__D {
+.zx-doma-filter .c-sel--button__ROAD2 {
   width: 100%;
-  padding: 10px 14px;
-  min-height: 44px;
+  padding: 0 14px;
+  height: 44px;
   box-sizing: border-box;
-  border: 1px solid var(--border-primary,#ECECEC);
+  border: 1px solid #E5E7EB;
   border-radius: 12px;
   background: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
+  color: var(--text-primary,#11181C);
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color .15s;
 }
+.zx-doma-filter .c-sel--button__ROAD:hover,
+.zx-doma-filter .c-sel--button__ROAD2:hover { border-color: #C7CCD4; }
+.zx-doma-filter .c-sel--img__ROAD,
+.zx-doma-filter .c-sel--img__ROAD2 { width: 14px; height: 14px; opacity: .6; }
 
-.zx-doma-filter .c-sel--fieldset__DIST { display: flex; flex-direction: column; gap: 0; }
-.zx-doma-filter .c-sel--fieldset__DIST > legend { margin-bottom: 6px; }
-.zx-doma-filter .c-sel--fieldset__DIST { flex-direction: column; }
-.zx-doma-filter .c-sel--fieldset__DIST .c-sel--label__DIST {
-  flex: 0 0 44px;
+/* Floors toggle chips */
+.zx-field--floors { }
+.zx-floors-chips { display: flex; gap: 8px; }
+.zx-floor-chip {
+  flex: 1 1 auto;
+  min-width: 52px;
   height: 44px;
-  min-width: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--border-primary,#ECECEC);
+  padding: 0 14px;
+  border: 1px solid #E5E7EB;
   border-radius: 12px;
   background: #fff;
+  font-size: 14px;
+  color: var(--text-primary,#11181C);
   cursor: pointer;
-  margin: 0 8px 0 0;
-  padding: 0;
+  transition: all .15s;
 }
-.zx-doma-filter .c-sel--fieldset__DIST { display: flex; flex-flow: row wrap; align-items: center; }
-.zx-doma-filter .c-sel--fieldset__DIST legend { flex-basis: 100%; }
+.zx-floor-chip:hover { border-color: #C7CCD4; }
+.zx-floor-chip.is-active {
+  background: #00BF3F;
+  border-color: #00BF3F;
+  color: #fff;
+  font-weight: 500;
+}
 
-/* Price range — compact single-line layout */
-.zx-field--range { display: flex; flex-direction: column; }
+/* Price range */
+.zx-field--range { }
 .zx-range-box {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  min-height: 44px;
-  padding: 8px 14px;
-  border: 1px solid var(--border-primary,#ECECEC);
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid #E5E7EB;
   border-radius: 12px;
   background: #fff;
   font-size: 14px;
-  color: var(--text-secondary,#6F737A);
+  color: #8A8F99;
   white-space: nowrap;
+  transition: border-color .15s;
 }
-.zx-range-val b { margin-left: 4px; color: var(--text-primary,#11181C); font-weight: 500; }
-.zx-range-dash { color: var(--text-secondary,#6F737A); }
-.zx-range-sliders { position: relative; height: 14px; margin-top: 6px; padding: 0 4px; }
+.zx-range-box:hover { border-color: #C7CCD4; }
+.zx-range-val { display: inline-flex; align-items: baseline; gap: 6px; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.zx-range-val b { color: var(--text-primary,#11181C); font-weight: 500; font-feature-settings: "tnum"; }
+.zx-range-dash { color: #C7CCD4; flex-shrink: 0; }
+
+.zx-range-sliders { position: relative; height: 18px; margin-top: 8px; padding: 0 6px; }
 .zx-range-sliders .c-sel--input__RANGE {
   position: absolute;
-  left: 4px; right: 4px;
-  width: calc(100% - 8px);
+  left: 6px; right: 6px;
+  width: calc(100% - 12px);
   margin: 0;
-  top: 6px;
+  top: 8px;
+  bottom: auto;
+  height: 2px;
 }
-.zx-range-sliders .c-sel--input__RANGE.max { top: 6px; bottom: auto; }
+.zx-range-sliders .c-sel--input__RANGE.max {
+  top: 8px;
+  background: transparent;
+}
 
-/* Area dropdown */
+/* Area dropdown popup — keep within card */
 .zx-doma-filter .c-sel--fieldset__ROAD2 { position: relative; }
-.zx-doma-filter .c-sel--div__ROAD2 { width: 100%; }
+.zx-doma-filter .c-sel--div__ROAD2 { width: 100%; left: 0; right: 0; top: calc(100% + 4px); }
 
-/* Preset chips row */
+/* Preset chips */
 .zx-doma-filter__chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed #EFEFEF;
   align-items: center;
 }
 .zx-preset-chip {
   position: relative;
   display: inline-flex;
   align-items: center;
-  height: 34px;
+  height: 32px;
   padding: 0 14px;
-  border: 1px solid var(--border-primary,#ECECEC);
+  border: 1px solid #E5E7EB;
   border-radius: 999px;
   background: #fff;
   font-size: 13px;
@@ -371,36 +436,36 @@ function zx_price_short($v){
   transition: background .15s, border-color .15s, color .15s;
 }
 .zx-preset-chip input { position: absolute; opacity: 0; pointer-events: none; }
-.zx-preset-chip:hover { border-color: var(--border-accent, #00BF3F); }
-.zx-preset-chip:has(input:checked) { background: var(--border-accent,#00BF3F); border-color: var(--border-accent,#00BF3F); color: #fff; }
+.zx-preset-chip:hover { border-color: #C7CCD4; }
+.zx-preset-chip:has(input:checked) { background: #00BF3F; border-color: #00BF3F; color: #fff; }
 
 .zx-doma-filter__reset {
   margin-left: auto;
   border: 0;
   background: transparent;
-  color: var(--text-secondary,#6F737A);
+  color: #8A8F99;
   font-size: 13px;
   cursor: pointer;
   padding: 6px 10px;
   border-radius: 8px;
 }
-.zx-doma-filter__reset:hover { color: var(--text-primary,#11181C); background: var(--bg-tetriary,#F4F6F9); }
+.zx-doma-filter__reset:hover { color: var(--text-primary,#11181C); background: #F4F6F9; }
 
-/* Inline trustbar */
-.zx-trustbar--inline { margin: 16px 0 12px; padding: 12px 16px; background: var(--bg-tetriary,#F4F6F9); border-radius: 14px; display:flex; flex-wrap: wrap; gap: 16px 28px; }
-.zx-trustbar--inline .zx-trustbar__item { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary,#6F737A); }
-.zx-trustbar--inline .zx-trustbar__item b { color: var(--text-primary,#11181C); font-weight: 600; }
-.zx-trustbar--inline .zx-trustbar__icon { color: var(--border-accent,#00BF3F); font-weight: 700; }
-
+/* Toolbar */
 .zx-doma-toolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin: 4px 0 16px; flex-wrap:wrap; }
-.zx-doma-toolbar__result b { color: var(--text-primary, #11181C); }
-.zx-doma-toolbar__sort { display:flex; align-items:center; gap:8px; color: var(--text-secondary,#6F737A); }
-.zx-doma-toolbar__sort .zx-filter-select { border: 1px solid var(--border-primary,#E5E7EB); background:#fff; border-radius: 10px; padding: 6px 10px; font-size: 13px; color: var(--text-primary,#11181C); cursor:pointer; }
+.zx-doma-toolbar__result { font-size: 14px; color: var(--text-secondary,#6F737A); }
+.zx-doma-toolbar__result b { color: var(--text-primary, #11181C); font-weight: 600; }
+.zx-doma-toolbar__sort { display:flex; align-items:center; gap:8px; color: #8A8F99; font-size: 13px; }
+.zx-doma-toolbar__sort .zx-filter-select { border: 1px solid #E5E7EB; background:#fff; border-radius: 10px; padding: 7px 10px; font-size: 13px; color: var(--text-primary,#11181C); cursor:pointer; }
 
 @media (max-width: 640px){
+  .zx-doma-filter { padding: 16px; }
   .zx-doma-toolbar { flex-direction: column; align-items: stretch; }
   .zx-doma-toolbar__sort { justify-content: space-between; }
+  .zx-doma-filter__chips { padding-top: 12px; margin-top: 12px; }
   .zx-doma-filter__reset { margin-left: 0; }
+  .zx-trustbar--top { padding: 12px 14px; gap: 8px 16px; }
+  .zx-trustbar--top .zx-trustbar__item { font-size: 13px; }
 }
 </style>
 
@@ -429,7 +494,6 @@ function zx_price_short($v){
 
   var priceMinHidden = document.getElementById('zxPriceMin');
   var priceMaxHidden = document.getElementById('zxPriceMax');
-  var floorsMaxHidden = document.getElementById('zxFloorsMax');
 
   function declProjects(n){
     var n10 = n % 10, n100 = n % 100;
@@ -499,13 +563,21 @@ function zx_price_short($v){
     });
   });
 
-  // Floors chips (c-sel--label__DIST) — main.js writes to floorsMaxHidden on change
-  if(floorsMaxHidden){
-    floorsMaxHidden.addEventListener('change', function(){
-      state.floors = floorsMaxHidden.value || '';
+  // Floors toggle chips — clicking same chip deselects
+  section.querySelectorAll('.zx-floor-chip').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var val = btn.dataset.zxFloor;
+      if(state.floors === val){
+        state.floors = '';
+        btn.classList.remove('is-active');
+      } else {
+        state.floors = val;
+        section.querySelectorAll('.zx-floor-chip').forEach(function(b){ b.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+      }
       render();
     });
-  }
+  });
 
   // Area radios inside c-sel--div__ROAD2
   section.querySelectorAll('input[name="zxArea"]').forEach(function(inp){
@@ -516,11 +588,19 @@ function zx_price_short($v){
   });
 
   // Price range — main.js writes final values to hidden inputs .min-price.price-sotka / .max-price.price-sotka
+  function fmtNum(n){
+    n = Math.round(n);
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
   function readPriceRange(){
     var minV = priceMinHidden && priceMinHidden.value !== '' ? parseFloat(priceMinHidden.value) : null;
     var maxV = priceMaxHidden && priceMaxHidden.value !== '' ? parseFloat(priceMaxHidden.value) : null;
     state.priceMin = (minV !== null && !isNaN(minV)) ? minV : null;
     state.priceMax = (maxV !== null && !isNaN(maxV)) ? maxV : null;
+    var spanMin = section.querySelector('.c-sel--span__RANGE.min');
+    var spanMax = section.querySelector('.c-sel--span__RANGE.max');
+    if(spanMin && state.priceMin !== null) spanMin.textContent = fmtNum(state.priceMin);
+    if(spanMax && state.priceMax !== null) spanMax.textContent = fmtNum(state.priceMax);
     render();
   }
   if(priceMinHidden) priceMinHidden.addEventListener('change', readPriceRange);
@@ -550,10 +630,7 @@ function zx_price_short($v){
     if(matDefault) matDefault.classList.add('__c-sel--label__ROAD__CHECKED');
     var matBtn = section.querySelector('.c-sel--button__ROAD span'); if(matBtn) matBtn.textContent = 'Не важно';
 
-    section.querySelectorAll('.c-sel--label__DIST').forEach(function(l){ l.classList.remove('__c-sel--label__DIST__CHECKED'); });
-    section.querySelectorAll('input[name="zxFloors"]').forEach(function(i){ i.checked = false; });
-    var hiddenFloors = section.querySelector('.c-sel--input__DIST_HIDDEN'); if(hiddenFloors) hiddenFloors.checked = true;
-    if(floorsMaxHidden) floorsMaxHidden.value = '';
+    section.querySelectorAll('.zx-floor-chip').forEach(function(b){ b.classList.remove('is-active'); });
 
     section.querySelectorAll('input[name="zxArea"]').forEach(function(i){ i.checked = (i.value === ''); });
     section.querySelectorAll('.c-sel--label__ROAD2').forEach(function(l){ l.classList.remove('__c-sel--label__ROAD__CHECKED2'); });
