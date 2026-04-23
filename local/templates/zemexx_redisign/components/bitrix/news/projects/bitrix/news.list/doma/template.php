@@ -78,159 +78,124 @@ function zx_price_short($v){
 ?>
 <div class="zx-scope" id="doma-items">
   <?if(!empty($cards)):?>
-  <section class="c-sel zx-doma-filter">
-    <div class="c-sel--div__CONTAINER">
-      <div class="c-sel__BACK"></div>
-      <form name="zxFilterForm" action="javascript:void(0)" class="smartfilter c-sel--form__FILTER" onsubmit="return false;">
-        <div class="c-sel--div__FILTER_TOP">
-          <h3 class="font__HEADING_SECTION_TITLE">Подбор проекта</h3>
-          <label class="c-sel--label__ADD font__BODY_TEXT_PRIMARY" id="zxResetTop">
-            Сбросить
-            <input class="c-sel--input__RESET" type="reset" style="display:none;">
-          </label>
-        </div>
+  <div class="c-sel--div__CONTAINER zx-doma-wrap">
 
-        <div class="c-sel--div__ZERO">
-          <div class="c-sel--div__FIRST">
+    <form name="zxFilterForm" action="javascript:void(0)" class="smartfilter zx-doma-filter" onsubmit="return false;">
+      <div class="zx-doma-filter__row">
 
-            <fieldset class="c-sel--fieldset__ROAD bx-filter-parameters-box bx-filter-select-container">
-              <span class="bx-filter-container-modef"></span>
-              <legend class="font__BODY_TEXT_CAPTION">Материал</legend>
-              <div class="bx-filter-select-block">
-                <div class="c-sel--button__ROAD font__BODY_TEXT_PRIMARY bx-filter-select-text" data-role="currentOption">
-                  <span>Не важно</span>
-                  <img class="c-sel--img__ROAD" src="/local/templates/zemexx_redisign/images/c-sel-arr-bott.svg" alt="стрелка вниз">
-                </div>
-                <div class="bx-filter-select-popup c-sel--div__ROAD c-sel--div__ROAD4" data-role="dropdownContent">
-                  <label class="bx-filter-param-label c-sel--label__ROAD font__BODY_TEXT_PRIMARY __c-sel--label__ROAD__CHECKED" data-zx-key="material" data-zx-val="">Не важно</label>
-                  <?foreach($matOptions as $xml => $name):?>
-                    <label class="bx-filter-param-label c-sel--label__ROAD font__BODY_TEXT_PRIMARY" data-zx-key="material" data-zx-val="<?=htmlspecialchars($xml)?>"><?=htmlspecialchars($name)?></label>
-                  <?endforeach?>
-                </div>
-              </div>
-            </fieldset>
-
-            <?if($hasMultiFloors):?>
-            <fieldset class="c-sel--fieldset__DIST bx-filter-parameters-box">
-              <span class="bx-filter-container-modef"></span>
-              <legend class="font__BODY_TEXT_CAPTION">Этажность</legend>
-              <label class="c-sel--label__DIST font__BODY_TEXT_PRIMARY">
-                1<input type="radio" name="zxFloors" value="1">
-              </label>
-              <label class="c-sel--label__DIST font__BODY_TEXT_PRIMARY">
-                2<input type="radio" name="zxFloors" value="2">
-              </label>
-              <input class="c-sel--input__DIST_HIDDEN" style="display:none;" type="radio" name="zxFloors" checked>
-              <input class="min-price from-mkad" type="hidden" name="zxFloorsMin" id="zxFloorsMin" value="">
-              <input class="max-price from-mkad" type="hidden" name="zxFloorsMax" id="zxFloorsMax" value="">
-            </fieldset>
-            <?endif?>
-
-          </div>
-
-          <div class="c-sel--div__SECOND">
-
-            <label class="c-sel--label__RANGE font__BODY_TEXT_CAPTION bx-filter-parameters-box">
-              <span class="bx-filter-container-modef"></span>
-              Цена, ₽
-              <div class="c-sel--p__RANGE font__BODY_TEXT_PRIMARY">
-                <p>от <span class="c-sel--span__RANGE min" data-from="<?=$priceMin?>"><?=number_format($priceMin,0,',',' ')?></span></p>
-                <span>&#8212;</span>
-                <p>до <span class="c-sel--span__RANGE max" data-to="<?=$priceMax?>"><?=number_format($priceMax,0,',',' ')?></span></p>
-              </div>
-              <input class="c-sel--input__RANGE min" type="range" name="zxPriceMinR" min="0" max="100" value="0">
-              <input class="c-sel--input__RANGE max" type="range" name="zxPriceMaxR" min="0" max="100" value="100">
-              <input class="min-price price-sotka" type="hidden" name="zxPriceMin" id="zxPriceMin" value="">
-              <input class="max-price price-sotka" type="hidden" name="zxPriceMax" id="zxPriceMax" value="">
-            </label>
-
-            <fieldset class="c-sel--fieldset__ROAD2 bx-filter-parameters-box">
-              <span class="bx-filter-container-modef"></span>
-              <legend class="font__BODY_TEXT_CAPTION">Площадь, м²</legend>
-              <button class="c-sel--button__ROAD2 font__BODY_TEXT_PRIMARY" type="button">
-                <span>Не важно</span>
-                <img class="c-sel--img__ROAD2" src="/local/templates/zemexx_redisign/images/c-sel-arr-bott.svg" alt="стрелка вниз">
-              </button>
-              <div class="c-sel--div__ROAD2">
-                <label class="c-sel--label__ROAD2 __c-sel--label__ROAD__CHECKED2 font__BODY_TEXT_PRIMARY">
-                  Не важно<input type="radio" name="zxArea" value="" checked>
-                </label>
-                <label class="c-sel--label__ROAD2 font__BODY_TEXT_PRIMARY">
-                  До 100<input type="radio" name="zxArea" value="0-100">
-                </label>
-                <label class="c-sel--label__ROAD2 font__BODY_TEXT_PRIMARY">
-                  100—150<input type="radio" name="zxArea" value="100-150">
-                </label>
-                <label class="c-sel--label__ROAD2 font__BODY_TEXT_PRIMARY">
-                  150—200<input type="radio" name="zxArea" value="150-200">
-                </label>
-                <label class="c-sel--label__ROAD2 font__BODY_TEXT_PRIMARY">
-                  От 200<input type="radio" name="zxArea" value="200-99999">
-                </label>
-              </div>
-            </fieldset>
-
-          </div>
-        </div>
-
-        <fieldset class="c-sel--fieldset__THIRD bx-filter-parameters-box bx-active">
+        <fieldset class="c-sel--fieldset__ROAD bx-filter-parameters-box bx-filter-select-container zx-field">
           <span class="bx-filter-container-modef"></span>
-          <legend class="c-sel--legend__THIRD font__BODY_TEXT_CAPTION">Дополнительно</legend>
-          <label class="c-sel--label__THIRD font__BODY_TEXT_PRIMARY bx-filter-param-label" data-zx-quick="ready">
-            Готовые сейчас<input type="checkbox" value="Y">
-          </label>
-          <label class="c-sel--label__THIRD font__BODY_TEXT_PRIMARY bx-filter-param-label" data-zx-quick="inprocess">
-            Идёт строительство<input type="checkbox" value="Y">
-          </label>
-          <label class="c-sel--label__THIRD font__BODY_TEXT_PRIMARY bx-filter-param-label" data-zx-quick="floor1">
-            Одноэтажные<input type="checkbox" value="Y">
-          </label>
-          <label class="c-sel--label__THIRD font__BODY_TEXT_PRIMARY bx-filter-param-label" data-zx-quick="floor2">
-            Двухэтажные<input type="checkbox" value="Y">
-          </label>
-          <label class="c-sel--label__THIRD font__BODY_TEXT_PRIMARY bx-filter-param-label" data-zx-quick="price5">
-            До 5 млн ₽<input type="checkbox" value="Y">
-          </label>
-          <label class="c-sel--label__THIRD font__BODY_TEXT_PRIMARY bx-filter-param-label" data-zx-quick="price8">
-            До 8 млн ₽<input type="checkbox" value="Y">
-          </label>
+          <legend class="font__BODY_TEXT_CAPTION">Материал</legend>
+          <div class="bx-filter-select-block">
+            <div class="c-sel--button__ROAD font__BODY_TEXT_PRIMARY bx-filter-select-text" data-role="currentOption">
+              <span>Не важно</span>
+              <img class="c-sel--img__ROAD" src="/local/templates/zemexx_redisign/images/c-sel-arr-bott.svg" alt="стрелка вниз">
+            </div>
+            <div class="bx-filter-select-popup c-sel--div__ROAD c-sel--div__ROAD4" data-role="dropdownContent">
+              <label class="bx-filter-param-label c-sel--label__ROAD font__BODY_TEXT_PRIMARY __c-sel--label__ROAD__CHECKED" data-zx-key="material" data-zx-val="">Не важно</label>
+              <?foreach($matOptions as $xml => $name):?>
+                <label class="bx-filter-param-label c-sel--label__ROAD font__BODY_TEXT_PRIMARY" data-zx-key="material" data-zx-val="<?=htmlspecialchars($xml)?>"><?=htmlspecialchars($name)?></label>
+              <?endforeach?>
+            </div>
+          </div>
         </fieldset>
 
-        <div class="c-sel--div__ADD">
-          <label class="c-sel--label__ADD font__BODY_TEXT_PRIMARY" id="zxResetBottom">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 16C0 7.16344 7.16344 0 16 0C24.8366 0 32 7.16344 32 16C32 24.8366 24.8366 32 16 32C7.16344 32 0 24.8366 0 16Z" fill="#F4F6F9"/>
-              <path class="c-sel--path" fill-rule="evenodd" clip-rule="evenodd" d="M11.3008 11.3003C10.9831 11.618 10.9831 12.133 11.3008 12.4507L14.8499 15.9999L11.3008 19.549C10.9831 19.8667 10.9831 20.3818 11.3008 20.6995C11.6185 21.0172 12.1335 21.0172 12.4512 20.6995L16.0004 17.1503L19.5495 20.6995C19.8672 21.0172 20.3823 21.0172 20.7 20.6995C21.0177 20.3818 21.0177 19.8667 20.7 19.549L17.1508 15.9999L20.7 12.4507C21.0177 12.133 21.0177 11.618 20.7 11.3003C20.3823 10.9826 19.8672 10.9826 19.5495 11.3003L16.0004 14.8494L12.4512 11.3003C12.1335 10.9826 11.6185 10.9826 11.3008 11.3003Z" fill="#5A6C7C"/>
-            </svg>
-            Очистить <span>фильтр</span>
+        <?if($hasMultiFloors):?>
+        <fieldset class="c-sel--fieldset__DIST bx-filter-parameters-box zx-field">
+          <span class="bx-filter-container-modef"></span>
+          <legend class="font__BODY_TEXT_CAPTION">Этажность</legend>
+          <label class="c-sel--label__DIST font__BODY_TEXT_PRIMARY">
+            1<input type="radio" name="zxFloors" value="1">
           </label>
-        </div>
-        <div class="c-sel--div__ADD2">
-          <button class="c-sel--button__CLOSE2 font__BUTTONS_BUTTON" type="button" id="zxShowBtn">
-            Показать <span id="zxCount"><?=$total?></span> <span id="zxCountWord">проектов</span>
+          <label class="c-sel--label__DIST font__BODY_TEXT_PRIMARY">
+            2<input type="radio" name="zxFloors" value="2">
+          </label>
+          <input class="c-sel--input__DIST_HIDDEN" style="display:none;" type="radio" name="zxFloors" checked>
+          <input class="min-price from-mkad" type="hidden" name="zxFloorsMin" id="zxFloorsMin" value="">
+          <input class="max-price from-mkad" type="hidden" name="zxFloorsMax" id="zxFloorsMax" value="">
+        </fieldset>
+        <?endif?>
+
+        <label class="c-sel--label__RANGE font__BODY_TEXT_CAPTION bx-filter-parameters-box zx-field zx-field--range">
+          <span class="bx-filter-container-modef"></span>
+          Цена, ₽
+          <div class="zx-range-box">
+            <span class="zx-range-val">от <b class="c-sel--span__RANGE min" data-from="<?=$priceMin?>"><?=number_format($priceMin,0,',',' ')?></b></span>
+            <span class="zx-range-dash">—</span>
+            <span class="zx-range-val">до <b class="c-sel--span__RANGE max" data-to="<?=$priceMax?>"><?=number_format($priceMax,0,',',' ')?></b></span>
+          </div>
+          <div class="zx-range-sliders">
+            <input class="c-sel--input__RANGE min" type="range" name="zxPriceMinR" min="0" max="100" value="0">
+            <input class="c-sel--input__RANGE max" type="range" name="zxPriceMaxR" min="0" max="100" value="100">
+          </div>
+          <input class="min-price price-sotka" type="hidden" name="zxPriceMin" id="zxPriceMin" value="">
+          <input class="max-price price-sotka" type="hidden" name="zxPriceMax" id="zxPriceMax" value="">
+        </label>
+
+        <fieldset class="c-sel--fieldset__ROAD2 bx-filter-parameters-box zx-field">
+          <span class="bx-filter-container-modef"></span>
+          <legend class="font__BODY_TEXT_CAPTION">Площадь, м²</legend>
+          <button class="c-sel--button__ROAD2 font__BODY_TEXT_PRIMARY" type="button">
+            <span>Не важно</span>
+            <img class="c-sel--img__ROAD2" src="/local/templates/zemexx_redisign/images/c-sel-arr-bott.svg" alt="стрелка вниз">
           </button>
-        </div>
+          <div class="c-sel--div__ROAD2">
+            <label class="c-sel--label__ROAD2 __c-sel--label__ROAD__CHECKED2 font__BODY_TEXT_PRIMARY">
+              Не важно<input type="radio" name="zxArea" value="" checked>
+            </label>
+            <label class="c-sel--label__ROAD2 font__BODY_TEXT_PRIMARY">
+              До 100<input type="radio" name="zxArea" value="0-100">
+            </label>
+            <label class="c-sel--label__ROAD2 font__BODY_TEXT_PRIMARY">
+              100—150<input type="radio" name="zxArea" value="100-150">
+            </label>
+            <label class="c-sel--label__ROAD2 font__BODY_TEXT_PRIMARY">
+              150—200<input type="radio" name="zxArea" value="150-200">
+            </label>
+            <label class="c-sel--label__ROAD2 font__BODY_TEXT_PRIMARY">
+              От 200<input type="radio" name="zxArea" value="200-99999">
+            </label>
+          </div>
+        </fieldset>
 
-      </form>
-    </div>
-  </section>
-
-  <div class="zx-trustbar">
-    <div class="c-sel--div__CONTAINER">
-      <div class="zx-trustbar__row">
-        <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>Фикс. цена</b> в договоре</span></div>
-        <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>Ипотека от 6%</b> · партнёрские ставки</span></div>
-        <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>5 лет гарантии</b> на конструктив</span></div>
-        <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>Сроки в договоре</b> · от 90 дней</span></div>
       </div>
-    </div>
-  </div>
 
-  <div class="c-sel--div__CONTAINER">
+      <div class="zx-doma-filter__chips">
+        <label class="zx-preset-chip" data-zx-quick="ready">
+          <input type="checkbox" value="Y"><span>Готовые сейчас</span>
+        </label>
+        <label class="zx-preset-chip" data-zx-quick="inprocess">
+          <input type="checkbox" value="Y"><span>Идёт строительство</span>
+        </label>
+        <label class="zx-preset-chip" data-zx-quick="floor1">
+          <input type="checkbox" value="Y"><span>Одноэтажные</span>
+        </label>
+        <label class="zx-preset-chip" data-zx-quick="floor2">
+          <input type="checkbox" value="Y"><span>Двухэтажные</span>
+        </label>
+        <label class="zx-preset-chip" data-zx-quick="price5">
+          <input type="checkbox" value="Y"><span>До 5 млн ₽</span>
+        </label>
+        <label class="zx-preset-chip" data-zx-quick="price8">
+          <input type="checkbox" value="Y"><span>До 8 млн ₽</span>
+        </label>
+        <button type="button" class="zx-doma-filter__reset" id="zxResetBottom">× Сбросить</button>
+      </div>
+    </form>
+
+    <div class="zx-trustbar zx-trustbar--inline">
+      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>Фикс. цена</b> в договоре</span></div>
+      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>Ипотека от 6%</b> · партнёрские ставки</span></div>
+      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>5 лет гарантии</b> на конструктив</span></div>
+      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>Сроки в договоре</b> · от 90 дней</span></div>
+    </div>
+
     <div class="zx-doma-toolbar">
       <div class="zx-doma-toolbar__result font__BODY_TEXT_PRIMARY">
         Подобрано <b id="zxCountTop"><?=$total?></b>
         <span id="zxCountTopWord">проектов</span>
+        <span id="zxCount" style="display:none"><?=$total?></span>
+        <span id="zxCountWord" style="display:none">проектов</span>
       </div>
       <label class="zx-doma-toolbar__sort font__BODY_TEXT_CAPTION">
         Сортировка
@@ -286,6 +251,7 @@ function zx_price_short($v){
     </div>
 
     <div class="zx-cat-empty font__BODY_TEXT_PRIMARY" id="zxEmpty" style="display:none;">По выбранным параметрам ничего не найдено</div>
+
   </div>
   <?else:?>
   <div class="c-sel--div__CONTAINER"><div class="zx-cat-empty font__BODY_TEXT_PRIMARY">Каталог пополняется.</div></div>
@@ -293,21 +259,154 @@ function zx_price_short($v){
 </div>
 
 <style>
-.zx-doma-filter { margin-bottom: 24px; }
-.zx-doma-filter .c-sel--form__FILTER { position: relative; }
-.zx-doma-toolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin: 12px 0 16px; flex-wrap:wrap; }
+.zx-doma-wrap { padding-top: 16px; padding-bottom: 48px; }
+
+.zx-doma-filter { margin: 0 0 12px; }
+
+.zx-doma-filter__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px 16px;
+  align-items: end;
+}
+@media (min-width: 720px){
+  .zx-doma-filter__row { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (min-width: 1080px){
+  .zx-doma-filter__row { grid-template-columns: minmax(180px,1.1fr) minmax(150px,0.9fr) minmax(260px,1.6fr) minmax(180px,1.1fr); }
+}
+
+.zx-doma-filter .zx-field { min-width: 0; margin: 0; padding: 0; border: 0; }
+.zx-doma-filter .zx-field > legend { display:block; padding:0; margin:0 0 6px; font-size:12px; color: var(--text-secondary,#6F737A); }
+
+.zx-doma-filter .c-sel--button__ROAD,
+.zx-doma-filter .c-sel--button__ROAD2,
+.zx-doma-filter .c-sel--button__D {
+  width: 100%;
+  padding: 10px 14px;
+  min-height: 44px;
+  box-sizing: border-box;
+  border: 1px solid var(--border-primary,#ECECEC);
+  border-radius: 12px;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.zx-doma-filter .c-sel--fieldset__DIST { display: flex; flex-direction: column; gap: 0; }
+.zx-doma-filter .c-sel--fieldset__DIST > legend { margin-bottom: 6px; }
+.zx-doma-filter .c-sel--fieldset__DIST { flex-direction: column; }
+.zx-doma-filter .c-sel--fieldset__DIST .c-sel--label__DIST {
+  flex: 0 0 44px;
+  height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-primary,#ECECEC);
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  margin: 0 8px 0 0;
+  padding: 0;
+}
+.zx-doma-filter .c-sel--fieldset__DIST { display: flex; flex-flow: row wrap; align-items: center; }
+.zx-doma-filter .c-sel--fieldset__DIST legend { flex-basis: 100%; }
+
+/* Price range — compact single-line layout */
+.zx-field--range { display: flex; flex-direction: column; }
+.zx-range-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--border-primary,#ECECEC);
+  border-radius: 12px;
+  background: #fff;
+  font-size: 14px;
+  color: var(--text-secondary,#6F737A);
+  white-space: nowrap;
+}
+.zx-range-val b { margin-left: 4px; color: var(--text-primary,#11181C); font-weight: 500; }
+.zx-range-dash { color: var(--text-secondary,#6F737A); }
+.zx-range-sliders { position: relative; height: 14px; margin-top: 6px; padding: 0 4px; }
+.zx-range-sliders .c-sel--input__RANGE {
+  position: absolute;
+  left: 4px; right: 4px;
+  width: calc(100% - 8px);
+  margin: 0;
+  top: 6px;
+}
+.zx-range-sliders .c-sel--input__RANGE.max { top: 6px; bottom: auto; }
+
+/* Area dropdown */
+.zx-doma-filter .c-sel--fieldset__ROAD2 { position: relative; }
+.zx-doma-filter .c-sel--div__ROAD2 { width: 100%; }
+
+/* Preset chips row */
+.zx-doma-filter__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  align-items: center;
+}
+.zx-preset-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--border-primary,#ECECEC);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 13px;
+  color: var(--text-primary,#11181C);
+  cursor: pointer;
+  user-select: none;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.zx-preset-chip input { position: absolute; opacity: 0; pointer-events: none; }
+.zx-preset-chip:hover { border-color: var(--border-accent, #00BF3F); }
+.zx-preset-chip:has(input:checked) { background: var(--border-accent,#00BF3F); border-color: var(--border-accent,#00BF3F); color: #fff; }
+
+.zx-doma-filter__reset {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary,#6F737A);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+.zx-doma-filter__reset:hover { color: var(--text-primary,#11181C); background: var(--bg-tetriary,#F4F6F9); }
+
+/* Inline trustbar */
+.zx-trustbar--inline { margin: 16px 0 12px; padding: 12px 16px; background: var(--bg-tetriary,#F4F6F9); border-radius: 14px; display:flex; flex-wrap: wrap; gap: 16px 28px; }
+.zx-trustbar--inline .zx-trustbar__item { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary,#6F737A); }
+.zx-trustbar--inline .zx-trustbar__item b { color: var(--text-primary,#11181C); font-weight: 600; }
+.zx-trustbar--inline .zx-trustbar__icon { color: var(--border-accent,#00BF3F); font-weight: 700; }
+
+.zx-doma-toolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin: 4px 0 16px; flex-wrap:wrap; }
 .zx-doma-toolbar__result b { color: var(--text-primary, #11181C); }
 .zx-doma-toolbar__sort { display:flex; align-items:center; gap:8px; color: var(--text-secondary,#6F737A); }
-.zx-doma-toolbar__sort .zx-filter-select { border: 1px solid var(--border-primary,#E5E7EB); background:#fff; border-radius: 10px; padding: 8px 10px; font-size: 14px; color: var(--text-primary,#11181C); cursor:pointer; }
+.zx-doma-toolbar__sort .zx-filter-select { border: 1px solid var(--border-primary,#E5E7EB); background:#fff; border-radius: 10px; padding: 6px 10px; font-size: 13px; color: var(--text-primary,#11181C); cursor:pointer; }
+
 @media (max-width: 640px){
   .zx-doma-toolbar { flex-direction: column; align-items: stretch; }
   .zx-doma-toolbar__sort { justify-content: space-between; }
+  .zx-doma-filter__reset { margin-left: 0; }
 }
 </style>
 
 <script>
 (function(){
-  var section = document.querySelector('.zx-doma-filter');
+  var section = document.querySelector('form.zx-doma-filter');
   if(!section) return;
 
   var state = {
@@ -427,8 +526,8 @@ function zx_price_short($v){
   if(priceMinHidden) priceMinHidden.addEventListener('change', readPriceRange);
   if(priceMaxHidden) priceMaxHidden.addEventListener('change', readPriceRange);
 
-  // Quick checkbox filters (c-sel--label__THIRD)
-  section.querySelectorAll('.c-sel--label__THIRD[data-zx-quick]').forEach(function(lbl){
+  // Quick preset chips
+  section.querySelectorAll('.zx-preset-chip[data-zx-quick]').forEach(function(lbl){
     var input = lbl.querySelector('input[type="checkbox"]');
     if(!input) return;
     input.addEventListener('change', function(){
@@ -473,26 +572,12 @@ function zx_price_short($v){
     if(priceMinHidden) priceMinHidden.value = '';
     if(priceMaxHidden) priceMaxHidden.value = '';
 
-    section.querySelectorAll('.c-sel--label__THIRD').forEach(function(l){
-      l.classList.remove('__c-sel--label__THIRD__CHECKED');
-      var i = l.querySelector('input'); if(i) i.checked = false;
-    });
+    section.querySelectorAll('.zx-preset-chip input[type="checkbox"]').forEach(function(i){ i.checked = false; });
 
     render();
   }
-  var resetTop = document.getElementById('zxResetTop');
   var resetBottom = document.getElementById('zxResetBottom');
-  if(resetTop) resetTop.addEventListener('click', function(e){ e.preventDefault(); resetFilter(); });
   if(resetBottom) resetBottom.addEventListener('click', function(e){ e.preventDefault(); resetFilter(); });
-
-  // Show button — scroll to results
-  var showBtn = document.getElementById('zxShowBtn');
-  if(showBtn){
-    showBtn.addEventListener('click', function(){
-      var grid = document.getElementById('zxItems');
-      if(grid) grid.scrollIntoView({behavior:'smooth', block:'start'});
-    });
-  }
 
   render();
 })();
