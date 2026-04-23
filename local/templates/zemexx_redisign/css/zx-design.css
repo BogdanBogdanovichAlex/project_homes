@@ -470,63 +470,21 @@
 @media (max-width: 760px) {
   .doma-detail-v2__heroInfo { bottom: 130px !important; gap: 12px !important; }
 }
-/* Лента пагинации hero — сегменты во всю ширину как на vp-hero */
-.doma-detail-v2__swiper .swiper-pagination {
-  padding: 0 16px !important;
-  height: 6px !important;
-  width: calc(100% - 32px) !important;
-  bottom: 77px !important;
-  left: 0 !important;
-  right: auto !important;
-  top: auto !important;
-  transform: none !important;
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: stretch;
-  gap: 4px;
-  z-index: 6;
-}
-.doma-detail-v2__swiper .swiper-pagination .swiper-pagination-bullet {
-  flex: 1 1 0 !important;
-  height: 100% !important;
-  width: auto !important;
-  min-width: 0 !important;
-  border-radius: 123px !important;
-  background: #fff !important;
-  opacity: .24 !important;
-  margin: 0 !important;
-  display: block !important;
-  transition: opacity .2s;
-}
-.doma-detail-v2__swiper .swiper-pagination .swiper-pagination-bullet-active {
-  background: var(--text-accent, #00bf3f) !important;
-  opacity: 1 !important;
-}
-@media (min-width: 768px) {
-  .doma-detail-v2__swiper .swiper-pagination {
-    padding: 0 32px !important;
-    width: calc(100% - 64px) !important;
-    bottom: 93px !important;
-  }
-}
-@media (max-width: 760px) {
-  .doma-detail-v2__swiper .swiper-pagination { bottom: 70px !important; }
-}
-/* Hero и advantages — без перекрытия (иначе пагинация прячется за плашкой) */
+/* Hero и advantages — без перекрытия */
 .doma-detail-v2__hero { margin-bottom: 0; }
 .zemex-hero-advantages { position: relative; z-index: 5; margin-top: -48px; }
 .zemex-hero-advantages .c-sel--div__CONTAINER { padding-bottom: 0; }
 @media (max-width: 900px) { .zemex-hero-advantages { margin-top: -32px; } }
-/* Пагинация поднимается над плашкой преимуществ */
-.doma-detail-v2__swiper .swiper-pagination { bottom: 24px !important; }
-@media (min-width: 768px) { .doma-detail-v2__swiper .swiper-pagination { bottom: 32px !important; } }
-@media (max-width: 760px) { .doma-detail-v2__swiper .swiper-pagination { bottom: 20px !important; } }
+/* Пагинация hero-swiper скрыта — навигация осуществляется стрелками ‹ › */
+.doma-detail-v2__swiper .swiper-pagination { display: none !important; }
 
 /* Скрываем старые хлебные крошки внутри hero — теперь они выше, отдельной полосой */
 .doma-detail-v2__hero-content .doma-detail-v2__bc { display: none !important; }
 
 /* ============ ХЛЕБНЫЕ КРОШКИ (отдельная полоса над hero) ============ */
-.zx-detail-bc { background: #fff; border-bottom: 1px solid #EEF0F3; padding: 14px 0; }
+/* Отступ сверху = высота floating-шапки сайта + gap, чтобы не пряталось под меню */
+.zx-detail-bc { background: transparent; border-bottom: 0; padding: 110px 0 14px; }
+@media (min-width: 992px) { .zx-detail-bc { padding: 120px 0 16px; } }
 .zx-detail-bc ol {
   list-style: none; margin: 0; padding: 0;
   display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px;
@@ -596,9 +554,9 @@
 .zx-scope .zxc__slider-val-duo:focus-within { border-bottom-color: var(--text-accent) !important; }
 .zx-scope .zxc__slider-val:focus-visible { border-bottom-color: var(--text-accent) !important; }
 
-/* Промо-блок (акции) — убираем огромные вертикальные отступы */
-.zemex-promo-cards { padding: 40px 0 !important; margin-bottom: 0 !important; }
-@media (max-width: 760px) { .zemex-promo-cards { padding: 24px 0 !important; } }
+/* Промо-блок (акции) — компактные отступы */
+.zemex-promo-cards { padding: 16px 0 !important; margin-bottom: 0 !important; margin-top: 0 !important; }
+@media (max-width: 760px) { .zemex-promo-cards { padding: 12px 0 !important; } }
 /* Отключаем мигающую pulse-green анимацию на кнопках promo.cards */
 .zemex-promo-cards *,
 .zemex-promo-cards *::before,
