@@ -46,8 +46,8 @@ $ver = max(
         <div class="zxc__prog" role="group" aria-label="Тип ипотечной программы">
           <span class="zxc__prog-label">Тип программы</span>
           <div class="zxc__prog-tabs">
-            <button type="button" class="zxc__prog-tab js-prog" data-prog="mortgage" aria-pressed="true">Ипотека</button>
-            <button type="button" class="zxc__prog-tab js-prog" data-prog="family"   aria-pressed="false">Семейная ипотека</button>
+            <button type="button" class="zxc__prog-tab js-prog" data-prog="mortgage" aria-pressed="false">Ипотека</button>
+            <button type="button" class="zxc__prog-tab js-prog" data-prog="family"   aria-pressed="true">Семейная ипотека</button>
             <button type="button" class="zxc__prog-tab js-prog" data-prog="it"       aria-pressed="false">IT-ипотека</button>
             <button type="button" class="zxc__prog-tab js-prog" data-prog="military" aria-pressed="false">Военная ипотека</button>
             <button type="button" class="zxc__prog-tab js-prog" data-prog="installment" aria-pressed="false">Рассматриваю рассрочку</button>
@@ -58,14 +58,14 @@ $ver = max(
         <!-- Стоимость -->
         <div class="zxc__slider">
           <div class="zxc__slider-row">
-            <label class="zxc__slider-label" for="zx-cost-val">Стоимость участка, ₽</label>
-            <input type="text" class="zxc__slider-val" id="zx-cost-val" value="10 000 000" inputmode="numeric" aria-label="Стоимость участка в рублях">
+            <label class="zxc__slider-label" for="zx-cost-val">Стоимость, ₽</label>
+            <input type="text" class="zxc__slider-val" id="zx-cost-val" value="10 000 000" inputmode="numeric" aria-label="Стоимость в рублях">
           </div>
           <div class="zxc__track" id="zx-cost-track">
             <div class="zxc__track-fill" id="zx-cost-fill"></div>
             <input type="range" class="zxc__range" id="zx-cost-slider"
                    min="500000" max="100000000" step="100000" value="10000000"
-                   aria-label="Стоимость участка, ползунок">
+                   aria-label="Стоимость, ползунок">
           </div>
           <div class="zxc__track-limits"><span>500 000</span><span>100 000 000</span></div>
         </div>
@@ -109,14 +109,13 @@ $ver = max(
 
         <!-- Результат -->
         <div class="zxc__result">
-          <div class="zxc__result-meta">
-            <span class="zxc__result-label js-result-label">Ежемесячный платёж</span>
-            <span class="zxc__result-hint">Расчёт предварительный. Окончательные условия зависят от результатов проверки документов и оценки платёжеспособности</span>
-          </div>
+          <span class="zxc__result-label js-result-label">Ежемесячный платёж</span>
           <span class="zxc__result-val" id="zx-result-val" aria-live="polite">—</span>
         </div>
 
         <button type="button" class="zxc__cta js-cta"><?= htmlspecialcharsbx($ctaText) ?></button>
+
+        <p class="zxc__result-hint">Расчёт предварительный. Окончательные условия зависят от результатов проверки документов и оценки платёжеспособности.</p>
       </div><!-- /.zxc__calc -->
 
       <!-- ════ Правая панель ════ -->

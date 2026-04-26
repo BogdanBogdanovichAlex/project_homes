@@ -75,7 +75,7 @@
   function qsa(sel, root) { return (root || document).querySelectorAll(sel); }
 
   /* ── Состояние + DOM ──────────────────────────────── */
-  var state = { prog: 'all' };
+  var state = { prog: 'family' };
   var el = null;
   var section = null;
 
@@ -577,7 +577,7 @@
     if (prog && RATES.hasOwnProperty(prog)) {
       switchProg(prog);
     } else {
-      recalc();
+      switchProg(state.prog);
     }
 
     if (scroll === '1' && section) {
@@ -586,6 +586,17 @@
       }, 300);
     }
   }
+
+  /* ── Глобальный API: установить цену без скролла ──── */
+  window.zxcSetCost = function (cost) {
+    if (!el || !el.costSlider) return;
+    var n = Math.round(+cost);
+    if (!n || isNaN(n)) return;
+    el.costSlider.value = clamp(n, +el.costSlider.min, +el.costSlider.max);
+    syncTrack(el.costSlider, el.costFill);
+    if (el.costVal) el.costVal.value = fmt(+el.costSlider.value);
+    recalc();
+  };
 
   /* ── Глобальный API для карточек участка ──────────── */
   window.zxcScrollAndFill = function (opts) {
@@ -658,7 +669,7 @@
       });
     });
 
-    switchProg('mortgage');
+    switchProg(state.prog);
     applyUrlParams();
   }
 

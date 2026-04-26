@@ -16,6 +16,11 @@ foreach($items as $arItem){
     }
 }
 $avgExperience = $cnt ? round($totalExperience/$cnt, 1) : 0;
+<?
+$buildersCfg = function_exists('zemex_get_homes_settings') ? zemex_get_homes_settings('builders') : [];
+$bEyebrow = !empty($buildersCfg['HERO_EYEBROW']) ? $buildersCfg['HERO_EYEBROW'] : 'Партнёрские компании';
+$bTitle   = !empty($buildersCfg['HERO_TITLE'])   ? $buildersCfg['HERO_TITLE']   : 'Застройщики';
+$bLead    = !empty($buildersCfg['HERO_LEAD'])    ? $buildersCfg['HERO_LEAD']    : 'Работаем только с проверенными командами. Каждая прошла аудит: проверка финустойчивости, качества объектов и репутации. Выбирайте партнёра под проект.';
 ?>
 <div class="zx-scope">
   <section class="zx-cat-hero">
@@ -28,9 +33,9 @@ $avgExperience = $cnt ? round($totalExperience/$cnt, 1) : 0;
       </div>
       <div class="zx-cat-hero__grid">
         <div>
-          <div class="zx-eyebrow" style="margin-bottom:20px;">Партнёрские компании · <?=$total?></div>
-          <h1 class="zx-display zx-cat-hero__title">Застройщики<span class="zx-cat-hero__title-dot">.</span></h1>
-          <div class="zx-cat-hero__lead">Работаем только с проверенными командами. Каждая прошла аудит: проверка финустойчивости, качества объектов и репутации. Выбирайте партнёра под проект.</div>
+          <div class="zx-eyebrow" style="margin-bottom:20px;"><?=htmlspecialchars($bEyebrow)?> · <?=$total?></div>
+          <h1 class="zx-display zx-cat-hero__title"><?=htmlspecialchars($bTitle)?><span class="zx-cat-hero__title-dot">.</span></h1>
+          <div class="zx-cat-hero__lead"><?=htmlspecialchars($bLead)?></div>
         </div>
         <div class="zx-cat-hero__stats">
           <div><div class="zx-display zx-stat__n"><?=$total?></div><div class="zx-stat__lab">партнёров в сети</div></div>
@@ -108,16 +113,26 @@ $avgExperience = $cnt ? round($totalExperience/$cnt, 1) : 0;
     <?endif?>
   </div>
 
+  <?
+  $ctaTitle  = !empty($buildersCfg['CTA_TITLE'])  ? $buildersCfg['CTA_TITLE']  : 'Строите дома? Разместите проекты у нас';
+  $ctaLead   = !empty($buildersCfg['CTA_LEAD'])   ? $buildersCfg['CTA_LEAD']   : 'Работа по договору-оферте, аудит за 5 рабочих дней, доступ к клиентам и инструменты для ведения сделок.';
+  $ctaButton = !empty($buildersCfg['CTA_BUTTON']) ? $buildersCfg['CTA_BUTTON'] : 'Оставить заявку →';
+  $ctaLink   = !empty($buildersCfg['CTA_LINK'])   ? $buildersCfg['CTA_LINK']   : '';
+  ?>
   <section class="zx-cta-dark">
     <div class="zx-container">
       <div class="zx-cta-dark__grid">
         <div>
           <div class="zx-eyebrow zx-cta-dark__eyebrow">Станьте партнёром</div>
-          <div class="zx-display zx-cta-dark__title">Строите дома? Разместите проекты у нас</div>
-          <div class="zx-cta-dark__lead">Работа по договору-оферте, аудит за 5 рабочих дней, доступ к клиентам и инструменты для ведения сделок.</div>
+          <div class="zx-display zx-cta-dark__title"><?=htmlspecialchars($ctaTitle)?></div>
+          <div class="zx-cta-dark__lead"><?=htmlspecialchars($ctaLead)?></div>
         </div>
         <div class="zx-cta-dark__actions">
-          <a class="zx-btn zx-btn--primary" data-fancybox="" data-src="#hidden-form" href="javascript:;" data-scope="Партнёрская заявка">Оставить заявку →</a>
+          <?if($ctaLink):?>
+            <a class="zx-btn zx-btn--primary" href="<?=htmlspecialchars($ctaLink)?>" data-scope="Партнёрская заявка"><?=htmlspecialchars($ctaButton)?></a>
+          <?else:?>
+            <a class="zx-btn zx-btn--primary" data-fancybox="" data-src="#hidden-form" href="javascript:;" data-scope="Партнёрская заявка"><?=htmlspecialchars($ctaButton)?></a>
+          <?endif?>
           <a class="zx-btn zx-btn--ghost-dark" href="/partnership/">Условия партнёрства</a>
         </div>
       </div>

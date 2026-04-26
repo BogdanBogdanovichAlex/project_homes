@@ -39,14 +39,20 @@
 .zxc *, .zxc *::before, .zxc *::after { box-sizing: border-box; }
 .zxc button { font-family: inherit; }
 
-/* Сетка сайта */
+/* Сетка сайта — соответствует .c-sel--div__CONTAINER */
 .zxc__wrap {
   width: 100%;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 16px;
 }
+@media (min-width: 768px)  { .zxc__wrap { padding: 0 32px; } }
 @media (min-width: 1440px) { .zxc__wrap { padding: 0 64px; } }
-@media (min-width: 1920px) { .zxc__wrap { padding: 0 72px; max-width: 1920px; } }
+@media (min-width: 1920px) { .zxc__wrap { padding: 0; max-width: 1776px; } }
+
+/* На страницах, где .zxc лежит внутри .doma-mortgage-wrap (каталог, застройщики),
+   родитель уже центрирует секцию по сетке сайта — не дублируем внутренние отступы. */
+.doma-mortgage-wrap > .zxc { padding-left: 0; padding-right: 0; }
+.doma-mortgage-wrap .zxc__wrap { padding: 0; max-width: none; }
 
 /* ── Заголовок ──────────────────────────────────────────────── */
 .zxc__head { margin: 0 0 40px; }
@@ -66,7 +72,7 @@
   color: var(--zxc-ink-2);
   margin: 0;
   max-width: 820px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 /* ── 2 колонки ──────────────────────────────────────────────── */
@@ -96,7 +102,7 @@
 /* Программы */
 .zxc__prog { display: flex; flex-direction: column; gap: 12px; }
 .zxc__prog-label {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--zxc-ink-2);
   letter-spacing: 0.01em;
@@ -172,12 +178,12 @@
 
 .zxc__prog-tabs--visible { display: flex !important; }
 .zxc__prog-tab {
-  padding: 9px 14px;
+  padding: 10px 16px;
   background: var(--zxc-surface-3);
   color: var(--zxc-ink-2);
   border: 1px solid transparent;
   border-radius: 999px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: background .2s, color .2s, border-color .2s;
@@ -194,9 +200,9 @@
 }
 
 .zxc__rate-hint {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--zxc-ink-2);
-  min-height: 16px;
+  min-height: 18px;
   font-weight: 500;
 }
 .zxc__rate-hint:empty { min-height: 0; }
@@ -211,10 +217,10 @@
 }
 .zxc__slider-label {
   font-family: 'PT Sans', sans-serif;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--zxc-ink-2);
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 1.35;
   flex: 1;
 }
 
@@ -224,11 +230,11 @@
   border-bottom: 1.5px solid var(--zxc-border);
   color: var(--zxc-ink);
   font-family: 'Montserrat', sans-serif;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
   padding: 4px 0;
   text-align: right;
-  width: 140px;
+  width: 160px;
   outline: none;
   transition: border-color .2s;
   font-variant-numeric: lining-nums tabular-nums;
@@ -244,14 +250,14 @@
 }
 .zxc__slider-val-duo:focus-within { border-bottom-color: var(--zxc-green); }
 .zxc__slider-val-duo .zxc__slider-val {
-  width: 90px;
+  width: 110px;
   border-bottom: none;
   padding: 0;
 }
-.zxc__slider-sep { color: var(--zxc-ink-3); font-size: 14px; }
+.zxc__slider-sep { color: var(--zxc-ink-3); font-size: 16px; }
 .zxc__slider-pct, .zxc__slider-unit {
   font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--zxc-ink);
   white-space: nowrap;
@@ -310,7 +316,7 @@
 .zxc__track-limits {
   display: flex;
   justify-content: space-between;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--zxc-ink-3);
   margin-top: -2px;
   font-family: 'PT Sans', sans-serif;
@@ -320,52 +326,50 @@
 .zxc__result {
   background: var(--zxc-surface-2);
   border-radius: var(--zxc-r-md);
-  padding: 18px 20px;
+  padding: 18px 22px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
   border: 1px solid var(--zxc-border-2);
 }
-.zxc__result-meta { flex: 1; min-width: 0; }
 .zxc__result-label {
-  display: block;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--zxc-ink-2);
-  margin-bottom: 6px;
   letter-spacing: 0.01em;
-}
-.zxc__result-hint {
-  display: block;
-  font-family: 'PT Sans', sans-serif;
-  font-size: 11px;
-  color: var(--zxc-ink-3);
-  line-height: 1.45;
-  font-weight: 400;
 }
 .zxc__result-val {
   font-family: 'Montserrat', sans-serif;
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--zxc-ink);
   letter-spacing: -0.02em;
   white-space: nowrap;
   flex-shrink: 0;
   line-height: 1;
-  padding-top: 2px;
+}
+.zxc__result-hint {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 13px;
+  color: var(--zxc-ink-3);
+  line-height: 1.5;
+  font-weight: 400;
+  margin: 0;
+  text-align: center;
+  width: 100%;
 }
 
 /* CTA */
 .zxc__cta {
   width: 100%;
-  padding: 17px 20px;
+  padding: 18px 20px;
   background: var(--zxc-green);
   color: #fff;
   border: none;
   border-radius: var(--zxc-r-md);
   font-family: 'Montserrat', sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: background .2s, transform .1s, box-shadow .2s;
@@ -374,6 +378,13 @@
 }
 .zxc__cta:hover { background: var(--zxc-green-2); box-shadow: 0 6px 18px rgba(0, 191, 63, .3); }
 .zxc__cta:active { transform: scale(.985); }
+
+/* Override для контекста .zx-scope (страница проекта),
+   где есть `.zx-scope button { background:none; color:inherit }` */
+.zxc .zxc__cta,
+.zx-scope .zxc__cta { background: var(--zxc-green); color: #fff; }
+.zxc .zxc__cta:hover,
+.zx-scope .zxc__cta:hover { background: var(--zxc-green-2); color: #fff; }
 
 /* ══════════════════════════════════════════════════════════════
    Правая колонка: список предложений
@@ -389,7 +400,7 @@
 }
 .zxc__panel-count {
   font-family: 'PT Sans', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--zxc-ink-2);
   font-weight: 400;
 }
@@ -406,7 +417,7 @@
   background: transparent;
   border: none;
   font-family: 'PT Sans', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--zxc-ink-2);
   cursor: pointer;
@@ -445,19 +456,19 @@
 }
 .zxc__group-rate {
   font-family: 'Montserrat', sans-serif;
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--zxc-green);
   white-space: nowrap;
   letter-spacing: -0.02em;
-  min-width: 90px;
+  min-width: 100px;
 }
 .zxc__group-meta {
   font-family: 'PT Sans', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--zxc-ink-2);
   flex: 1;
-  line-height: 1.35;
+  line-height: 1.45;
 }
 .zxc__group-monthly {
   font-family: 'Montserrat', sans-serif;
@@ -470,13 +481,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 9px 18px;
+  padding: 11px 22px;
   border: 1.5px solid var(--zxc-green);
   background: transparent;
   border-radius: var(--zxc-r-sm);
   color: var(--zxc-green);
   font-family: 'Montserrat', sans-serif;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
@@ -550,16 +561,16 @@
 }
 .zxc__bank-name {
   font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--zxc-ink);
   letter-spacing: -0.01em;
 }
 .zxc__bank-rate {
   font-family: 'PT Sans', sans-serif;
-  font-size: 12.5px;
+  font-size: 14px;
   color: var(--zxc-ink-2);
-  line-height: 1.4;
+  line-height: 1.5;
 }
 .zxc__bank-rate b {
   font-family: 'Montserrat', sans-serif;
@@ -572,9 +583,9 @@
 }
 .zxc__bank-details {
   font-family: 'PT Sans', sans-serif;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--zxc-ink-3);
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .zxc__collapse-btn {
@@ -583,12 +594,12 @@
   justify-content: center;
   gap: 6px;
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background: transparent;
   border: none;
   color: var(--zxc-green);
   font-family: 'Montserrat', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   margin-top: 6px;
@@ -614,11 +625,11 @@
 }
 .zxc__pcard-title {
   font-family: 'Montserrat', sans-serif;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--zxc-ink);
   margin: 0 0 18px;
-  line-height: 1.35;
+  line-height: 1.4;
   letter-spacing: -0.01em;
 }
 .zxc__pcard--active .zxc__pcard-title { color: #fff; }
@@ -632,7 +643,7 @@
 .zxc__pcard-col { display: flex; flex-direction: column; gap: 4px; }
 .zxc__pcard-label {
   font-family: 'PT Sans', sans-serif;
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--zxc-ink-3);
   text-transform: uppercase;
@@ -641,7 +652,7 @@
 .zxc__pcard--active .zxc__pcard-label { color: rgba(255,255,255,.75); }
 .zxc__pcard-val {
   font-family: 'Montserrat', sans-serif;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--zxc-ink);
   letter-spacing: -0.01em;
@@ -649,15 +660,15 @@
 .zxc__pcard--active .zxc__pcard-val { color: #fff; }
 .zxc__pcard-sub {
   font-family: 'PT Sans', sans-serif;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--zxc-ink-3);
-  line-height: 1.4;
+  line-height: 1.5;
 }
 .zxc__pcard--active .zxc__pcard-sub { color: rgba(255,255,255,.7); }
 .zxc__pcard-col--total { text-align: right; align-items: flex-end; }
 .zxc__pcard-total {
   font-family: 'Montserrat', sans-serif;
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--zxc-ink);
   letter-spacing: -0.02em;
@@ -665,12 +676,12 @@
 .zxc__pcard--active .zxc__pcard-total { color: #fff; }
 .zxc__pcard-badge {
   display: inline-block;
-  padding: 4px 12px;
+  padding: 5px 14px;
   background: var(--zxc-green-soft);
   color: var(--zxc-green-2);
   border-radius: 999px;
   font-family: 'Montserrat', sans-serif;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   margin-top: 4px;
 }
@@ -685,8 +696,8 @@
   justify-content: flex-end;
 }
 .zxc__apply-btn--inst {
-  padding: 11px 22px;
-  font-size: 14px;
+  padding: 12px 26px;
+  font-size: 15px;
 }
 .zxc__pcard--active .zxc__apply-btn--inst {
   border-color: #fff;

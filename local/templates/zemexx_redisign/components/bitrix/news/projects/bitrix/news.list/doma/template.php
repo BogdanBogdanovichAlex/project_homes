@@ -33,12 +33,34 @@ foreach($items as $arItem){
     if(!empty($arItem['PREVIEW_PICTURE']['SRC'])) $imgSrc = $arItem['PREVIEW_PICTURE']['SRC'];
     elseif(!empty($arItem['DETAIL_PICTURE']['SRC'])) $imgSrc = $arItem['DETAIL_PICTURE']['SRC'];
 
+    // Собираем галерею: DETAIL_PICTURE + PREVIEW_PICTURE + GALLERY_TOP + GALLERY_BOTTOM (до 10 фото, без дубликатов)
+    $gallerySrcs = [];
+    foreach([
+        $arItem['DETAIL_PICTURE']['SRC'] ?? null,
+        $arItem['PREVIEW_PICTURE']['SRC'] ?? null,
+    ] as $src){
+        if($src && !in_array($src, $gallerySrcs, true)) $gallerySrcs[] = $src;
+    }
+    foreach(['GALLERY_TOP','GALLERY_BOTTOM'] as $galCode){
+        if(!empty($props[$galCode])){
+            $fids = is_array($props[$galCode]) ? $props[$galCode] : [$props[$galCode]];
+            foreach($fids as $fid){
+                if(!$fid) continue;
+                $f = CFile::GetFileArray($fid);
+                if(!empty($f['SRC']) && !in_array($f['SRC'], $gallerySrcs, true)){
+                    $gallerySrcs[] = $f['SRC'];
+                    if(count($gallerySrcs) >= 10) break 2;
+                }
+            }
+        }
+    }
+
     if($priceRaw > 0) $pricesAll[] = $priceRaw;
 
     $cards[] = [
         'id' => $arItem['ID'], 'editArea' => $this->GetEditAreaId($arItem['ID']),
         'name' => $arItem['NAME'], 'url' => $arItem['DETAIL_PAGE_URL'],
-        'preview' => $arItem['PREVIEW_TEXT'] ?? '', 'img' => $imgSrc,
+        'preview' => $arItem['PREVIEW_TEXT'] ?? '', 'img' => $imgSrc, 'gallery' => $gallerySrcs,
         'price' => isset($props['PRICE']) ? $props['PRICE'] : '', 'priceRaw' => $priceRaw,
         'square' => isset($props['SQUARE']) ? $props['SQUARE'] : '', 'squareRaw' => $squareRaw,
         'floors' => $floorsNum,
@@ -80,11 +102,23 @@ function zx_price_short($v){
   <?if(!empty($cards)):?>
   <div class="c-sel--div__CONTAINER zx-doma-wrap">
 
+    <?
+    $catalogCfg = function_exists('zemex_get_homes_settings') ? zemex_get_homes_settings('catalog') : [];
+    $trustLines = !empty($catalogCfg['TRUST_LINES']) && is_array($catalogCfg['TRUST_LINES']) ? $catalogCfg['TRUST_LINES'] : [
+        'Фикс. цена | в договоре',
+        'Ипотека от 6% | партнёрские ставки',
+        '5 лет гарантии | на конструктив',
+        'Сроки в договоре | от 90 дней',
+    ];
+    ?>
     <div class="zx-trustbar zx-trustbar--inline zx-trustbar--top">
-      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>Фикс. цена</b> в договоре</span></div>
-      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>Ипотека от 6%</b> · партнёрские ставки</span></div>
-      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>5 лет гарантии</b> на конструктив</span></div>
-      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b>Сроки в договоре</b> · от 90 дней</span></div>
+      <?foreach($trustLines as $line):
+        $parts = function_exists('zemex_split_pipe') ? zemex_split_pipe($line, 2) : array_map('trim', explode('|', $line, 2));
+        $bold = $parts[0] ?? '';
+        $tail = $parts[1] ?? '';
+      ?>
+      <div class="zx-trustbar__item"><span class="zx-trustbar__icon">✓</span><span><b><?=htmlspecialchars($bold)?></b><?=$tail ? ' '.htmlspecialchars($tail) : ''?></span></div>
+      <?endforeach?>
     </div>
 
     <form name="zxFilterForm" action="javascript:void(0)" class="smartfilter zx-doma-filter" onsubmit="return false;">
@@ -214,8 +248,27 @@ function zx_price_short($v){
          data-floors="<?=htmlspecialchars((string)$c['floors'])?>"
          data-ready="<?=$c['ready']?>"
          data-inprocess="<?=$c['inprocess']?>">
-        <div class="zx-img-ph zx-proj-card__img">
-          <?if($c['img']):?><img src="<?=$c['img']?>" alt="<?=htmlspecialchars($c['name'])?>" loading="lazy"><?endif?>
+        <div class="zx-img-ph zx-proj-card__img<?= count($c['gallery']) > 1 ? ' zx-proj-card__img--gallery' : '' ?>">
+          <?if(!empty($c['gallery'])):?>
+            <div class="zx-proj-card__slides js-proj-slides">
+              <?foreach($c['gallery'] as $gi => $gsrc):?>
+                <img src="<?=$gsrc?>" alt="<?=htmlspecialchars($c['name'])?>" loading="<?= $gi === 0 ? 'lazy' : 'lazy' ?>" class="zx-proj-card__slide<?= $gi === 0 ? ' is-active' : '' ?>" data-idx="<?=$gi?>">
+              <?endforeach?>
+            </div>
+            <?if(count($c['gallery']) > 1):?>
+              <button type="button" class="zx-proj-card__slide-nav zx-proj-card__slide-nav--prev js-proj-prev" aria-label="Предыдущее фото" onclick="event.preventDefault();event.stopPropagation();">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 11L5 7l4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button type="button" class="zx-proj-card__slide-nav zx-proj-card__slide-nav--next js-proj-next" aria-label="Следующее фото" onclick="event.preventDefault();event.stopPropagation();">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="zx-proj-card__slide-dots js-proj-dots">
+                <?foreach($c['gallery'] as $gi => $gsrc):?>
+                  <button type="button" class="zx-proj-card__slide-dot<?= $gi === 0 ? ' is-active' : '' ?>" data-idx="<?=$gi?>" aria-label="Фото <?=$gi+1?>" onclick="event.preventDefault();event.stopPropagation();"></button>
+                <?endforeach?>
+              </div>
+            <?endif?>
+          <?endif?>
           <div class="zx-proj-card__badges">
             <span class="zx-chip <?=$statusClass?>"><span class="zx-chip__dot"></span><?=$statusLabel?></span>
           </div>
@@ -275,35 +328,54 @@ function zx_price_short($v){
 .zx-doma-wrap { padding-top: 24px; padding-bottom: 32px; }
 @media(min-width:992px){ .zx-doma-wrap { padding-top: 32px; padding-bottom: 40px; } }
 
-/* Trustbar — top */
+/* Trustbar — top: мини-USP-панель, «лёжит» на нижней кромке hero */
 .zx-trustbar--top {
-  margin: 0 0 20px;
-  padding: 14px 18px;
-  background: #F4F9F5;
-  border: 1px solid #D6EBD9;
-  border-radius: 16px;
+  position: relative;
+  z-index: 3;
+  margin: -80px 0 40px;
+  padding: 18px 28px;
+  background: #ffffff;
+  border: 1px solid #E6EAF0;
+  border-radius: 20px;
+  box-shadow: 0 14px 34px rgba(7, 23, 53, .12);
   display: flex;
   flex-wrap: wrap;
-  gap: 10px 28px;
+  align-items: stretch;
+  gap: 0;
 }
 .zx-trustbar--top .zx-trustbar__item {
+  flex: 1 1 0;
+  min-width: 220px;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
+  gap: 12px;
+  padding: 6px 24px;
+  border-left: 1px solid #EDF1F5;
+  font-size: 15px;
+  line-height: 1.4;
   color: var(--text-secondary,#6F737A);
 }
+.zx-trustbar--top .zx-trustbar__item:first-child { border-left: 0; padding-left: 0; }
+.zx-trustbar--top .zx-trustbar__item:last-child  { padding-right: 0; }
 .zx-trustbar--top .zx-trustbar__item b { color: var(--text-primary,#11181C); font-weight: 600; }
 .zx-trustbar--top .zx-trustbar__icon {
   display: inline-flex;
-  width: 18px; height: 18px;
+  width: 24px; height: 24px;
   align-items: center; justify-content: center;
   color: #fff;
   background: #00BF3F;
   border-radius: 50%;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 191, 63, .22);
+}
+@media (max-width: 991px) {
+  .zx-trustbar--top .zx-trustbar__item {
+    flex: 1 1 calc(50% - 1px);
+    border-left: 0;
+    padding: 6px 0;
+  }
 }
 
 /* Filter card */
@@ -320,7 +392,7 @@ function zx_price_short($v){
   display: grid;
   grid-template-columns: 1fr;
   gap: 14px 18px;
-  align-items: end;
+  align-items: start;
 }
 @media (min-width: 720px){
   .zx-doma-filter__row { grid-template-columns: repeat(2, minmax(0,1fr)); }
@@ -334,19 +406,24 @@ function zx_price_short($v){
 .zx-doma-filter .zx-field__legend {
   display: block;
   padding: 0;
-  margin: 0 0 6px;
-  font-size: 12px;
-  line-height: 1;
-  color: #8A8F99;
+  margin: 0 0 8px;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #6F737A;
   letter-spacing: .01em;
+  font-weight: 400;
 }
+.zx-doma-filter .c-sel--label__RANGE { font-family: 'PT Sans', sans-serif; font-size: 14px; color: #6F737A; font-weight: 400; line-height: 1.2; letter-spacing: .01em; }
+.zx-doma-filter .c-sel--label__RANGE .zx-range-box,
+.zx-doma-filter .c-sel--label__RANGE .zx-range-sliders { margin-top: 8px; }
 
 /* Dropdown buttons (Material, Area) */
 .zx-doma-filter .c-sel--button__ROAD,
 .zx-doma-filter .c-sel--button__ROAD2 {
   width: 100%;
   padding: 0 14px;
-  height: 44px;
+  height: 46px;
   box-sizing: border-box;
   border: 1px solid #E5E7EB;
   border-radius: 12px;
@@ -356,9 +433,18 @@ function zx_price_short($v){
   align-items: center;
   gap: 8px;
   color: var(--text-primary,#11181C);
-  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
   cursor: pointer;
   transition: border-color .15s;
+}
+.zx-doma-filter .c-sel--button__ROAD span,
+.zx-doma-filter .c-sel--button__ROAD2 span,
+.zx-doma-filter .zx-range-box,
+.zx-doma-filter .zx-range-val,
+.zx-doma-filter .zx-range-val b {
+  font-family: 'Montserrat', sans-serif;
 }
 .zx-doma-filter .c-sel--button__ROAD:hover,
 .zx-doma-filter .c-sel--button__ROAD2:hover { border-color: #C7CCD4; }
@@ -371,7 +457,7 @@ function zx_price_short($v){
 .zx-doma-filter button.zx-floor-chip {
   flex: 1 1 auto;
   min-width: 56px;
-  height: 44px;
+  height: 46px;
   padding: 0 16px;
   border: 1.5px solid #CDD2DB !important;
   border-radius: 12px !important;
@@ -405,12 +491,12 @@ function zx_price_short($v){
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  height: 44px;
+  height: 46px;
   padding: 0 14px;
   border: 1px solid #E5E7EB;
   border-radius: 12px;
   background: #fff;
-  font-size: 14px;
+  font-size: 15px;
   color: #8A8F99;
   white-space: nowrap;
   transition: border-color .15s;
@@ -493,8 +579,8 @@ function zx_price_short($v){
   .zx-doma-toolbar__sort { justify-content: space-between; }
   .zx-doma-filter__chips { padding-top: 12px; margin-top: 12px; }
   .zx-doma-filter__reset { margin-left: 0; }
-  .zx-trustbar--top { padding: 12px 14px; gap: 8px 16px; }
-  .zx-trustbar--top .zx-trustbar__item { font-size: 13px; }
+  .zx-trustbar--top { margin: -32px 0 24px; padding: 14px 16px; border-radius: 16px; }
+  .zx-trustbar--top .zx-trustbar__item { font-size: 14px; min-width: 0; flex: 1 1 100%; padding: 4px 0; }
 }
 </style>
 
@@ -612,6 +698,18 @@ function zx_price_short($v){
   section.querySelectorAll('input[name="zxArea"]').forEach(function(inp){
     inp.addEventListener('change', function(){
       state.area = inp.value;
+      var parentLbl = inp.closest('.c-sel--label__ROAD2');
+      // Обновляем класс «выбранного» элемента
+      section.querySelectorAll('.c-sel--label__ROAD2').forEach(function(l){ l.classList.remove('__c-sel--label__ROAD__CHECKED2'); });
+      if(parentLbl) parentLbl.classList.add('__c-sel--label__ROAD__CHECKED2');
+      // Обновляем текст кнопки селекта
+      var btnSpan = section.querySelector('.c-sel--button__ROAD2 span');
+      if(btnSpan && parentLbl){
+        btnSpan.textContent = (parentLbl.textContent || '').trim() || 'Не важно';
+      }
+      // Закрываем дропдаун (убираем класс открытия у родительского fieldset)
+      var fs = inp.closest('.c-sel--fieldset__ROAD2');
+      if(fs) fs.classList.remove('is-open','opened','__c-sel--fieldset__ROAD2__OPEN');
       render();
     });
   });
@@ -686,5 +784,159 @@ function zx_price_short($v){
   if(resetBottom) resetBottom.addEventListener('click', function(e){ e.preventDefault(); resetFilter(); });
 
   render();
+})();
+</script>
+
+<style>
+/* Мини-галерея внутри карточки проекта */
+.zx-proj-card__img--gallery { position: relative; }
+.zx-proj-card__slides {
+  position: absolute; inset: 0;
+  display: block;
+}
+.zx-proj-card__slide {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .25s ease;
+  pointer-events: none;
+}
+.zx-proj-card__slide.is-active { opacity: 1; }
+
+/* Навигация */
+.zx-proj-card__slide-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff;
+  color: #11181C;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: .95;
+  transition: opacity .2s, background .2s, transform .2s, box-shadow .2s;
+  z-index: 3;
+  box-shadow: 0 4px 14px rgba(7,23,53,.22);
+  padding: 0;
+}
+.zx-proj-card__slide-nav svg { width: 18px; height: 18px; }
+.zx-proj-card__slide-nav--prev { left: 12px; }
+.zx-proj-card__slide-nav--next { right: 12px; }
+.zx-proj-card__slide-nav:hover {
+  background: #00BF3F; color: #fff; opacity: 1;
+  transform: translateY(-50%) scale(1.06);
+  box-shadow: 0 6px 18px rgba(0,191,63,.35);
+}
+.zx-proj-card__slide-nav:active { transform: translateY(-50%) scale(.95); }
+.zx-proj-card__slide-nav[disabled] { opacity: 0; pointer-events: none; }
+
+/* Точки */
+.zx-proj-card__slide-dots {
+  position: absolute;
+  bottom: 12px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 6px;
+  z-index: 3;
+  padding: 6px 10px;
+  background: rgba(7, 23, 53, .28);
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+}
+.zx-proj-card__slide-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.55);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: background .2s, width .2s;
+}
+.zx-proj-card__slide-dot.is-active { background: #fff; width: 18px; border-radius: 999px; }
+</style>
+
+<script>
+(function(){
+  function initCard(card){
+    // Убираем битые слайды и лишние точки (после всех ошибок загрузки)
+    var slidesAll = Array.prototype.slice.call(card.querySelectorAll('.zx-proj-card__slide'));
+    var dotsWrap = card.querySelector('.js-proj-dots');
+    var dotsAll = dotsWrap ? Array.prototype.slice.call(dotsWrap.querySelectorAll('.zx-proj-card__slide-dot')) : [];
+
+    var prev = card.querySelector('.js-proj-prev');
+    var next = card.querySelector('.js-proj-next');
+
+    function currentList(){ return slidesAll.filter(function(s){ return !s.dataset.broken; }); }
+    function currentDots(){ return dotsAll.filter(function(d, k){ return slidesAll[k] && !slidesAll[k].dataset.broken; }); }
+
+    function update(){
+      var slides = currentList();
+      var dots = currentDots();
+      dotsAll.forEach(function(d, k){ d.style.display = (slidesAll[k] && slidesAll[k].dataset.broken) ? 'none' : ''; });
+      if(slides.length <= 1){
+        if(prev) prev.style.display = 'none';
+        if(next) next.style.display = 'none';
+        if(dotsWrap) dotsWrap.style.display = 'none';
+        card.classList.remove('zx-proj-card__img--gallery');
+      } else {
+        card.classList.add('zx-proj-card__img--gallery');
+      }
+      // Убедимся, что активный слайд — первый неломанный
+      var active = slides.filter(function(s){ return s.classList.contains('is-active'); })[0];
+      if(!active && slides.length){
+        slidesAll.forEach(function(s){ s.classList.remove('is-active'); });
+        slides[0].classList.add('is-active');
+        var firstIdx = slidesAll.indexOf(slides[0]);
+        dotsAll.forEach(function(d, k){ d.classList.toggle('is-active', k === firstIdx); });
+      }
+    }
+
+    // Слушаем ошибки загрузки изображений
+    slidesAll.forEach(function(s){
+      // Форсим eager-загрузку, чтобы сразу знать о битых файлах
+      s.loading = 'eager';
+      if(s.complete && s.naturalWidth === 0){ s.dataset.broken = '1'; s.style.display = 'none'; }
+      s.addEventListener('error', function(){ s.dataset.broken = '1'; s.style.display = 'none'; update(); });
+      s.addEventListener('load', function(){ update(); });
+    });
+    update();
+
+    function go(dir){
+      var slides = currentList();
+      if(slides.length < 2) return;
+      var currentIdx = slides.findIndex(function(s){ return s.classList.contains('is-active'); });
+      if(currentIdx < 0) currentIdx = 0;
+      var nextIdx = (currentIdx + dir + slides.length) % slides.length;
+      slidesAll.forEach(function(s){ s.classList.remove('is-active'); });
+      slides[nextIdx].classList.add('is-active');
+      var targetSlideAllIdx = slidesAll.indexOf(slides[nextIdx]);
+      dotsAll.forEach(function(d, k){ d.classList.toggle('is-active', k === targetSlideAllIdx); });
+    }
+
+    if(prev) prev.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); go(-1); });
+    if(next) next.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); go(1); });
+    dotsAll.forEach(function(dot){
+      dot.addEventListener('click', function(e){
+        e.preventDefault(); e.stopPropagation();
+        var target = parseInt(dot.dataset.idx, 10) || 0;
+        if(slidesAll[target] && !slidesAll[target].dataset.broken){
+          slidesAll.forEach(function(s){ s.classList.remove('is-active'); });
+          slidesAll[target].classList.add('is-active');
+          dotsAll.forEach(function(d, k){ d.classList.toggle('is-active', k === target); });
+        }
+      });
+    });
+
+    // Свайп
+    var startX = null;
+    card.addEventListener('touchstart', function(e){ startX = e.touches[0].clientX; }, {passive: true});
+    card.addEventListener('touchend', function(e){
+      if(startX === null) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      if(Math.abs(dx) > 40) { go(dx < 0 ? 1 : -1); }
+      startX = null;
+    });
+  }
+  document.querySelectorAll('.zx-proj-card__img--gallery').forEach(initCard);
 })();
 </script>
